@@ -1,4 +1,5 @@
 import path from "node:path";
+
 import { fileURLToPath } from "node:url";
 
 import {
@@ -9,7 +10,9 @@ import {
 } from "../constants.js";
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+
 const isCompiled = path.basename(path.dirname(moduleDir)) === "dist";
+
 const serverRoot = isCompiled
   ? path.resolve(moduleDir, "..", "..")
   : path.resolve(moduleDir, "..");
@@ -29,9 +32,11 @@ export type ServerConfig = {
 
 function getJwtSecret() {
   if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
+
   if (process.env.NODE_ENV === "production") {
     throw new Error("JWT_SECRET must be set in production");
   }
+
   return "infotek-book-catalog-dev-secret";
 }
 
@@ -43,7 +48,9 @@ export function createServerConfig(): ServerConfig {
     jwtExpiresIn: JWT_EXPIRES_IN,
     jwtTtlMs: JWT_TTL_MS,
     smsApiKey: process.env.SMSPILOT_API_KEY || "",
-    dataFile: path.join(serverRoot, "data", "store.json"),
+    dataFile: process.env.VERCEL
+      ? path.join("/tmp", "infotek-store.json")
+      : path.join(serverRoot, "data", "store.json"),
     uploadsDir: path.join(serverRoot, "uploads"),
     publicDir: path.join(serverRoot, "public"),
     isProduction: process.env.NODE_ENV === "production",
