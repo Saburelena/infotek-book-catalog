@@ -1,0 +1,297 @@
+.filters {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.6fr) minmax(var(--filter-year-min), 0.8fr) minmax(var(--filter-author-min), 1fr)
+    auto;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+.filters:has(> :nth-child(2):last-child) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: var(--grid-gap-xl);
+  row-gap: var(--space-8);
+  isolation: isolate;
+}
+.book-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.book-cover-frame {
+  margin: 0;
+  display: block;
+  border-radius: var(--radius);
+  background: var(--leather);
+}
+.book-cover-frame,
+.author-card {
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--duration) var(--ease-out),
+    box-shadow var(--duration) ease;
+}
+.book-card:hover,
+.author-card:hover {
+  z-index: 2;
+}
+.book-cover-frame:hover,
+.book-cover-frame:focus-visible,
+.author-card:hover,
+.author-card:focus-visible {
+  transform: translateY(calc(var(--lift) * -1));
+  box-shadow: var(--shadow-card-hover);
+}
+.book-cover-frame:active,
+.author-card:active {
+  transform: translateY(calc(var(--lift) * -0.4));
+  box-shadow: var(--shadow-card);
+}
+.book-card h2 a:hover,
+.authors a:hover,
+.rank-body a:hover,
+.book-list a:hover {
+  color: var(--burgundy);
+}
+.book-card h2 a:focus-visible,
+.authors a:focus-visible,
+.rank-body a:focus-visible,
+.book-list a:focus-visible {
+  box-shadow: var(--ring-gold);
+}
+.book-card h2 a:active,
+.authors a:active,
+.rank-body a:active,
+.book-list a:active {
+  color: var(--burgundy-2);
+}
+.book-list a:hover {
+  border-color: var(--burgundy);
+}
+.book-list a:active {
+  transform: scale(var(--press-scale));
+}
+.book-cover,
+.detail-cover,
+.cover-empty {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: var(--cover-ratio);
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: inherit;
+}
+.cover-empty {
+  display: grid;
+  place-items: center;
+  background: var(--cover-empty-grad);
+  color: var(--gold-2);
+  text-align: center;
+  padding: var(--space-4) 10px;
+  font-size: var(--text-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.book-card-body {
+  padding: 2px 2px 0;
+  text-align: left;
+}
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book-card h2 {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-snug);
+}
+.book-card h2 a,
+.authors a,
+.rank-body a,
+.book-list a {
+  text-decoration: none;
+  color: inherit;
+}
+.meta {
+  color: var(--ink-strong);
+  margin: 0 0 var(--space-1);
+  font-weight: 600;
+}
+.book-card .meta {
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+}
+.book-card .authors {
+  margin: 6px 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.35;
+}
+.authors {
+  color: var(--muted);
+  margin: var(--space-2) 0;
+}
+.detail .authors {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: var(--text-lg);
+}
+
+.pager {
+  justify-content: center;
+  gap: var(--space-2);
+}
+.catalog .pager {
+  margin-top: auto;
+  padding-top: var(--space-7);
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: minmax(var(--detail-cover-min), var(--cover-max)) 1fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+.detail-cover {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-detail);
+}
+.lead {
+  font-size: var(--text-xl);
+  max-width: 62ch;
+}
+
+.author-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--author-card-min), 1fr));
+  column-gap: var(--space-2);
+  row-gap: var(--space-4);
+  isolation: isolate;
+}
+.author-card {
+  text-decoration: none;
+  color: var(--muted);
+  padding: var(--space-3) 14px;
+  min-height: var(--author-row-h);
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+.author-card strong {
+  font-weight: 500;
+}
+.avatar {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex: 0 0 var(--avatar-size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--burgundy);
+  color: var(--gold-2);
+  font-size: var(--text-4xl);
+}
+
+.book-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.book-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: var(--list-row-h);
+  padding: 0 var(--space-4);
+  transition:
+    border-color var(--duration) ease,
+    transform 0.12s ease,
+    color var(--duration) ease;
+}
+.book-list em {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.rank-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.rank-list li {
+  display: grid;
+  grid-template-columns: var(--rank-col) 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+  min-height: var(--rank-row-h);
+  padding: var(--space-3) var(--space-4);
+}
+.rank {
+  font-size: var(--text-5xl);
+  color: var(--burgundy);
+}
+.rank-bar {
+  height: var(--bar-h);
+  background: var(--burgundy-mid);
+  margin-top: var(--space-2);
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+}
+.rank-bar span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+
+/* --bp-lg */
+@media (max-width: 1100px) {
+  .book-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--grid-gap-lg);
+  }
+}
+
+/* --bp-md */
+@media (max-width: 900px) {
+  .filters,
+  .detail,
+  .rank-list li {
+    grid-template-columns: 1fr;
+  }
+  .book-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--grid-gap-md);
+    row-gap: var(--space-7);
+  }
+}
+
+/* --bp-sm */
+@media (max-width: 560px) {
+  .book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-4);
+    row-gap: var(--space-6);
+  }
+  .filters {
+    padding: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+  .author-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.state-empty h2 {
+  font-size: 1.17em;
+}

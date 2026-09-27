@@ -1,0 +1,9 @@
+**/node_modules
+frontend/dist
+server/dist
+.runtime
+.git
+.github
+playwright-report
+test-results
+*.log

@@ -1,0 +1,62 @@
+/* Оверлеи монтируются в body (Teleport) — вне #app, поэтому глобальные, но с префиксом app- */
+
+.app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  z-index: var(--z-modal);
+}
+.app-modal {
+  width: min(var(--modal-max), 100%);
+  padding: var(--space-6);
+  max-height: min(90vh, 720px);
+  overflow: auto;
+}
+.ui-stack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.app-toasts {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+  z-index: var(--z-toast);
+  max-width: calc(100% - var(--space-4) * 2);
+}
+.app-toast {
+  padding: var(--space-3) var(--space-4);
+  max-width: var(--toast-max);
+}
+.app-toast-ok {
+  background: var(--burgundy);
+  color: var(--gold-2);
+}
+.app-toast-err {
+  background: var(--leather);
+  color: var(--cream);
+}
+.state-empty {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--muted);
+}
+
+/* --bp-sm */
+@media (max-width: 560px) {
+  .app-toasts {
+    left: var(--space-4);
+    right: var(--space-4);
+  }
+  .app-toast {
+    max-width: none;
+  }
+  .app-modal {
+    padding: var(--space-4);
+  }
+}

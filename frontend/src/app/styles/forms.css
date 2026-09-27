@@ -1,0 +1,259 @@
+.cover-picker {
+  position: relative;
+  display: grid;
+  justify-items: stretch;
+  align-content: start;
+  gap: var(--space-3);
+}
+.cover-picker > .field-label {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+}
+.cover-picker > label.cover-pick {
+  display: inline-flex;
+  width: auto;
+  max-width: var(--cover-max);
+  text-align: center;
+}
+.cover-picker .detail-cover {
+  max-width: var(--cover-max);
+  object-fit: cover;
+}
+.cover-pick {
+  justify-self: center;
+}
+.cover-picker .cover-empty {
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+}
+
+.form-page.narrow {
+  max-width: var(--form-narrow);
+  margin-inline: auto;
+}
+.card-form {
+  margin-top: var(--space-4);
+  padding: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+}
+.card-form.book-editor {
+  display: flow-root;
+}
+.book-editor .cover-picker {
+  float: right;
+  width: min(var(--cover-max), 100%);
+  margin: 0 0 var(--space-3) var(--space-7);
+}
+.book-editor-fields {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+.book-editor-authors {
+  min-inline-size: 0;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  border: 0;
+}
+.book-editor-authors .chip {
+  margin: 0 var(--space-2) var(--space-2) 0;
+  vertical-align: top;
+}
+.book-editor .form-actions {
+  clear: both;
+  margin-top: var(--space-2);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+.chip {
+  position: relative;
+  height: auto;
+  min-height: var(--chip-min-h);
+  padding: var(--space-2) 14px;
+  font-size: var(--text-md);
+}
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.legend {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+}
+.year-picker {
+  min-width: var(--filter-year-min);
+}
+
+.ui-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.ui-select-trigger {
+  width: 100%;
+  height: var(--field-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0 calc(var(--field-pad) * 2 + var(--chevron)) 0 var(--field-pad);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background-color: var(--vellum);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%236a3a28' d='M1.1 1.2 6 6.1l4.9-4.9 1.1 1.1L6 8.2 0 2.3z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right var(--field-pad) center;
+  background-size: var(--chevron) var(--chevron-h);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--duration) ease,
+    box-shadow var(--duration) ease,
+    background-color var(--duration) ease;
+}
+.ui-select-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ui-select-trigger:hover {
+  border-color: var(--field-hover-border);
+}
+.ui-select.open .ui-select-trigger,
+.ui-select-trigger:focus-visible {
+  border-color: var(--burgundy);
+  box-shadow: var(--ring-ink);
+}
+.ui-select-panel {
+  position: absolute;
+  z-index: var(--z-select);
+  left: 0;
+  right: 0;
+  top: calc(100% + var(--space-1));
+  overflow: hidden;
+  padding: var(--select-list-pad) var(--select-list-pad) var(--select-list-pad-end);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--select-surface);
+  box-shadow: var(--shadow);
+  isolation: isolate;
+}
+.ui-select-list {
+  max-height: var(--select-list-max);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y proximity;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--select-surface);
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color var(--scrollbar-fade-ms) ease;
+}
+.ui-select-list.is-scrolling {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+.ui-select-list::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+}
+.ui-select-list::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.ui-select-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ui-select-list::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color var(--scrollbar-fade-ms) ease;
+}
+.ui-select-list.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+.ui-select-list.is-scrolling::-webkit-scrollbar-thumb:hover {
+  background-color: var(--burgundy);
+}
+.ui-select-option {
+  box-sizing: border-box;
+  height: var(--select-option-h);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  scroll-snap-align: start;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--select-surface);
+  transition:
+    background-color var(--duration) ease,
+    color var(--duration) ease;
+}
+.ui-select-option:hover,
+.ui-select-option.active {
+  background: var(--ghost-hover);
+}
+.ui-select-option.selected,
+.ui-select-option.selected:hover,
+.ui-select-option.selected.active {
+  background: var(--burgundy);
+  color: var(--gold-2);
+}
+
+/* --bp-md */
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .card-form.book-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .book-editor .cover-picker {
+    float: none;
+    order: 1;
+    margin: 0;
+    width: 100%;
+    max-width: var(--cover-max);
+    justify-self: start;
+  }
+  .book-editor-fields {
+    order: 0;
+  }
+  .book-editor-authors {
+    order: 2;
+    margin-top: 0;
+  }
+  .book-editor .form-actions {
+    order: 3;
+    margin-top: 0;
+  }
+}
+
+/* --bp-sm */
+@media (max-width: 560px) {
+  .card-form {
+    padding: var(--space-4);
+  }
+  .year-picker {
+    min-width: 0;
+    width: 100%;
+  }
+}

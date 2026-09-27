@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="420" viewBox="0 0 300 420">
+  <defs>
+    <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2c241c"/>
+      <stop offset="0.5" stop-color="#1f1610"/>
+      <stop offset="1" stop-color="#0e0a08"/>
+    </linearGradient>
+    <linearGradient id="s6" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0e0a08"/>
+      <stop offset="1" stop-color="#1f1610" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="n6" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/>
+      <feColorMatrix type="luminanceToAlpha"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.14"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+  </defs>
+  <rect width="300" height="420" fill="url(#g6)"/>
+  <rect width="300" height="420" fill="#1f1610" filter="url(#n6)" opacity="0.5"/>
+  <rect width="20" height="420" fill="url(#s6)"/>
+  <rect x="38" y="38" width="224" height="344" rx="14" fill="none" stroke="#ead9b4" stroke-width="1.6" stroke-opacity="0.92"/>
+  <rect x="48" y="48" width="204" height="324" rx="10" fill="none" stroke="#ead9b4" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="150" y="88" text-anchor="middle" fill="#ead9b4" fill-opacity="0.75" font-family="Times New Roman, serif" font-size="10" letter-spacing="5">BIBLIOTHECA</text>
+  <path d="M78 106h144" stroke="#ead9b4" stroke-opacity="0.4"/>
+  <text x="150" y="196" text-anchor="middle" fill="#ead9b4" font-family="Times New Roman, serif" font-size="21">Мастер и</text><text x="150" y="224" text-anchor="middle" fill="#ead9b4" font-family="Times New Roman, serif" font-size="21">Маргарита</text>
+  <path d="M78 314h144" stroke="#ead9b4" stroke-opacity="0.4"/>
+  <text x="150" y="348" text-anchor="middle" fill="#ead9b4" fill-opacity="0.75" font-family="Times New Roman, serif" font-size="11" letter-spacing="3">INFOTEK</text>
+</svg>

@@ -1,0 +1,163 @@
+:root {
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+
+  /* Layout */
+  --content-max: 1240px;
+  --content-gutter: 40px;
+  --content-gutter-sm: 16px;
+  --shell-width: min(var(--content-max), calc(100% - var(--content-gutter)));
+  --shell-width-sm: min(var(--content-max), calc(100% - var(--content-gutter-sm) * 2));
+  --masthead-min-h: 80px;
+  --modal-max: 440px;
+  --toast-max: 320px;
+  --form-narrow: 460px;
+  --cover-max: 300px;
+  --filter-year-min: 168px;
+  --filter-author-min: 200px;
+  --detail-cover-min: 220px;
+  --author-card-min: 240px;
+  --avatar-size: 44px;
+  --rank-col: 48px;
+  --bar-h: 6px;
+  --chip-min-h: 36px;
+  --list-row-h: 52px;
+  --rank-row-h: 64px;
+  --author-row-h: 68px;
+  --lift: 10px;
+  --blur: 16px;
+  --cover-ratio: 300 / 420;
+  --grid-gap-xl: 36px;
+  --grid-gap-lg: 28px;
+  --grid-gap-md: 22px;
+
+  /* Breakpoints — дублируйте те же значения в @media */
+  --bp-lg: 1100px;
+  --bp-md: 900px;
+  --bp-sm: 560px;
+
+  /* Z-index */
+  --z-masthead: 10;
+  --z-select: 12;
+  --z-modal: 20;
+  --z-toast: 30;
+  --z-skip: 40;
+  --z-tooltip: 15;
+  --z-card-hover: 2;
+  --select-list-pad: 10px;
+  --select-list-pad-end: 14px;
+  --select-option-h: 44px;
+  --select-list-rows: 6;
+  --select-list-max: calc(var(--select-option-h) * var(--select-list-rows));
+  --select-surface: #f7ecd2;
+  --scrollbar-size: 5px;
+  --scrollbar-thumb: rgba(106, 58, 40, 0.55);
+  --scrollbar-fade-ms: 0.45s;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Controls */
+  --field-h: 44px;
+  --field-pad: 16px;
+  --btn-pad-x: 18px;
+  --chevron: 12px;
+  --chevron-h: 8px;
+
+  /* Type */
+  --text-2xs: 0.72rem;
+  --text-xs: 0.78rem;
+  --text-sm: 0.84rem;
+  --text-md: 0.88rem;
+  --text-base: 0.92rem;
+  --text-lg: 1.05rem;
+  --text-xl: 1.08rem;
+  --text-2xl: 1.12rem;
+  --text-3xl: 1.35rem;
+  --text-4xl: 1.4rem;
+  --text-5xl: 1.6rem;
+  --text-display: clamp(2.1rem, 4.2vw, 3.5rem);
+  --lh-tight: 1.02;
+  --lh-snug: 1.22;
+  --lh-body: 1.55;
+  --track-wide: 0.1em;
+  --track-wider: 0.14em;
+
+  /* Color */
+  --vellum: #f6ead0;
+  --ink: #4a2e1c;
+  --ink-strong: #5a3512;
+  --muted: #6e5340;
+  --burgundy: #6a3a28;
+  --burgundy-2: #522c1e;
+  --leather: #3a2216;
+  --gold: #c4a15a;
+  --gold-2: #e2c98a;
+  --cream: #f3e6c8;
+  --page: #e4d0a6;
+  --page-top: #f3e4c4;
+  --page-mid: #e6d0a4;
+  --page-bottom: #dcc49a;
+  --cover-empty-from: #6a3224;
+  --cover-empty-mid: #3a1810;
+  --cover-empty-to: #24100c;
+  --line: rgba(90, 48, 24, 0.18);
+  --card: rgba(247, 236, 210, 0.92);
+  --masthead-bg: rgba(244, 230, 200, 0.9);
+  --overlay: rgba(28, 17, 12, 0.46);
+  --burgundy-soft: rgba(106, 58, 40, 0.08);
+  --burgundy-mid: rgba(106, 58, 40, 0.12);
+  --burgundy-strong: rgba(106, 58, 40, 0.28);
+  --burgundy-glow: rgba(106, 58, 40, 0.1);
+  --ink-shadow: rgba(40, 16, 8, 0.5);
+  --ink-shadow-2: rgba(40, 16, 8, 0.28);
+  --ink-shadow-3: rgba(40, 16, 8, 0.16);
+  --ink-shadow-4: rgba(40, 18, 8, 0.14);
+  --ink-shadow-5: rgba(40, 16, 8, 0.22);
+  --ink-shadow-6: rgba(40, 16, 8, 0.2);
+  --ink-shadow-7: rgba(40, 16, 8, 0.45);
+  --ink-shadow-8: rgba(40, 16, 8, 0.24);
+  --gold-ring: rgba(196, 161, 90, 0.45);
+
+  /* Surfaces */
+  --page-glow: radial-gradient(ellipse at 50% -10%, var(--burgundy-glow), transparent 46%);
+  --page-grad: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 48%, var(--page-bottom) 100%);
+  --cover-empty-grad: linear-gradient(
+    160deg,
+    var(--cover-empty-from) 0%,
+    var(--cover-empty-mid) 48%,
+    var(--cover-empty-to) 100%
+  );
+
+  /* Elevation */
+  --shadow: 0 16px 36px var(--ink-shadow-4);
+  --shadow-card: 0 1px 1px var(--ink-shadow), 0 6px 10px var(--ink-shadow-2), 0 14px 22px var(--ink-shadow-3);
+  --shadow-card-hover:
+    0 16px 20px var(--ink-shadow-4), 0 32px 40px var(--ink-shadow-5), 0 52px 72px var(--ink-shadow-6);
+  --shadow-detail: 0 1px 2px var(--ink-shadow-7), 0 12px 22px var(--ink-shadow-8), 0 28px 48px var(--ink-shadow-6);
+  --ring-gold: 0 0 0 3px var(--gold-ring);
+  --ring-ink: 0 0 0 3px var(--burgundy-strong);
+  --press-scale: 0.98;
+  --ghost-hover: rgba(106, 58, 40, 0.08);
+  --danger-hover: #4a2c1c;
+  --field-hover-border: rgba(90, 48, 24, 0.32);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 0.28s;
+  --duration-press: 0.12s;
+
+  --serif: "Lora", "Palatino Linotype", "Times New Roman", serif;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "infotek-book-catalog",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix server && npm install --prefix tools/e2e",
+    "dev": "concurrently -n api,web -c green,cyan \"npm run dev --prefix server\" \"npm run dev --prefix frontend\"",
+    "lint": "npm run lint --prefix frontend",
+    "typecheck": "npm run typecheck --prefix frontend && npm run typecheck --prefix server",
+    "test": "npm test --prefix frontend && npm test --prefix server",
+    "dep:check": "npm run dep:check --prefix frontend",
+    "build": "npm run build --prefix frontend && npm run build --prefix server",
+    "e2e:install": "npm install --prefix tools/e2e",
+    "e2e": "npm run test --prefix tools/e2e",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run dep:check && npm run build",
+    "verify:all": "npm run verify && npm run e2e",
+    "format": "npm run format --prefix frontend",
+    "format:check": "npm run format:check --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

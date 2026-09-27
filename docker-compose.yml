@@ -1,0 +1,16 @@
+services:
+  infotek:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      SMSPILOT_API_KEY: ${SMSPILOT_API_KEY:-}
+    volumes:
+      - ./.runtime/data:/app/server/data
+      - ./.runtime/uploads:/app/server/uploads
+    restart: unless-stopped
