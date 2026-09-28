@@ -26,7 +26,9 @@ test("demo user can sign in", async ({ page }) => {
   await page.getByRole("button", { name: "Войти" }).click();
 
   await expect(page.getByRole("button", { name: "Выйти" })).toBeVisible();
-  await expect(page.getByText("user", { exact: true })).toBeVisible();
+  await expect(
+  page.getByRole("banner").getByText("user", { exact: true }),
+).toBeVisible();
 });
 
 test("catalog has no automatic axe violations", async ({ page }) => {

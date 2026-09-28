@@ -7,6 +7,15 @@ import { paginate } from "../utils/pagination.js";
 import { validateBookInput } from "../utils/validation.js";
 import type { NotificationService } from "./notification.service.js";
 
+function includesWholeWord(text: string, query: string) {
+  const normalizedText = text.toLocaleLowerCase("ru-RU");
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  return new RegExp(
+    `(^|[^\\p{L}\\p{N}])${escapedQuery}($|[^\\p{L}\\p{N}])`,
+    "u",
+  ).test(normalizedText);
+}
 
 export class BookService {
   constructor(
@@ -33,14 +42,13 @@ export class BookService {
           const authors = store.authors
             .filter((author) => book.author_ids.includes(author.id))
             .map((author) => author.full_name)
-            .join(" ")
-            .toLocaleLowerCase("ru-RU");
+            .join(" ");
 
           return (
-            book.title.toLocaleLowerCase("ru-RU").includes(query) ||
-            (book.description || "").toLocaleLowerCase("ru-RU").includes(query) ||
+            includesWholeWord(book.title, query) ||
+            includesWholeWord(book.description || "", query) ||
             (book.isbn || "").includes(query) ||
-            authors.includes(query)
+            includesWholeWord(authors, query)
           );
         });
       }
