@@ -1,8 +1,12 @@
 <template>
   <article class="book-card">
-    <figure class="book-cover-frame">
-      <BookCover :src="book.cover_url" :title="`Обложка «${book.title}»`" class="book-cover" />
-    </figure>
+    <RouterLink :to="ROUTES.book(book.id)" class="book-cover-frame">
+  <BookCover
+    :src="book.cover_url"
+    :title="`Обложка «${book.title}»`"
+    class="book-cover"
+  />
+</RouterLink>
     <div class="book-card-body">
       <p class="meta">{{ book.year }}</p>
       <h2 class="clamp-2">
