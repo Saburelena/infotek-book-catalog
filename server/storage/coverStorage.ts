@@ -113,16 +113,15 @@ export function createCoverStorage(config: CoverStorageConfig) {
   fs.mkdirSync(config.uploadsDir, { recursive: true });
 
   function ensureCovers(books: BookRecord[]) {
-    for (const book of books) {
-      const file = path.basename(book.cover_url || `cover-${book.id}.svg`);
-      const full = path.join(config.uploadsDir, file);
-      if (file.endsWith(".svg")) {
-        fs.writeFileSync(full, svgCover(book.id, book.title), "utf8");
-      } else if (!fs.existsSync(full)) {
-        fs.writeFileSync(full, svgCover(book.id, book.title), "utf8");
-      }
+  for (const book of books) {
+    const file = path.basename(book.cover_url || `cover-${book.id}.svg`);
+    const full = path.join(config.uploadsDir, file);
+
+    if (!fs.existsSync(full)) {
+      fs.writeFileSync(full, svgCover(book.id, book.title), "utf8");
     }
   }
+}
 
   function uploadedUrl(file: Express.Multer.File) {
     return `/uploads/${file.filename}`;
