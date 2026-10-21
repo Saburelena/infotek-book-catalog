@@ -13,10 +13,9 @@
               />
             </svg>
           </span>
-          <span>
-            <strong>Инфотек</strong>
-            &nbsp;
-            <em>каталог книг</em>
+          <span class="brand-text">
+            <strong class="brand-name">Инфотек</strong>
+            <span class="brand-subtitle">каталог книг</span>
           </span>
         </RouterLink>
         <span id="brand-desc" class="sr-only">на главную</span>

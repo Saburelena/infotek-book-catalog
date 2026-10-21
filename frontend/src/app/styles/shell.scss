@@ -77,8 +77,25 @@ html::-webkit-scrollbar-thumb:hover {
   border-radius: var(--radius-md);
 }
 
-.brand strong {
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Добавили воздух между строками */
+  line-height: 1.2;
+}
+
+.brand-name {
   font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.brand-subtitle {
+  font-size: var(--text-xs);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 .brand em {
