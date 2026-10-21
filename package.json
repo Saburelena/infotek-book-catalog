@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
+    "opentype.js": "^2.0.0",
     "prettier": "^3.9.10",
     "type-coverage": "^2.30.4"
   }
