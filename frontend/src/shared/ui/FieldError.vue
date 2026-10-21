@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{ message?: string; id?: string }>(), { message: "", id: undefined });
+withDefaults(defineProps<{ message?: string | undefined; id?: string }>(), { message: "", id: "" });
 </script>

@@ -1,8 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import multer from "multer";
+import { del } from "@vercel/blob";
 
 import {
+  BLOB_HOSTNAME_SUFFIX,
   COVER_EXT as COVER_EXT_LIST,
   COVER_FALLBACK_EXT,
   COVER_MAX_BYTES,
@@ -14,6 +16,8 @@ import type { BookRecord } from "../domain/types.js";
 
 type CoverStorageConfig = {
   uploadsDir: string;
+  blobStoreId: string;
+  delBlob?: ((url: string) => Promise<void>) | undefined;
 };
 
 const MATERIALS = [
@@ -103,31 +107,58 @@ function coverExt(name: string) {
 
 function extractUploadFilename(url?: string) {
   if (!url) return "";
-  const safe = decodeURIComponent(String(url).split("?")[0].split("#")[0]);
+  const cleaned = String(url).replace(/[?#].*$/, "");
+  const safe = decodeURIComponent(cleaned);
   const file = path.basename(safe.replace(/\\/g, "/"));
   if (!file || file === "." || file === ".." || file.includes("..")) return "";
   return file;
 }
 
+function isAbsoluteUrl(url?: string) {
+  return Boolean(url && /^https?:\/\//i.test(url));
+}
+
 export function createCoverStorage(config: CoverStorageConfig) {
   fs.mkdirSync(config.uploadsDir, { recursive: true });
 
-  function ensureCovers(books: BookRecord[]) {
-  for (const book of books) {
-    const file = path.basename(book.cover_url || `cover-${book.id}.svg`);
-    const full = path.join(config.uploadsDir, file);
+  const blobHostname = config.blobStoreId ? `${config.blobStoreId}${BLOB_HOSTNAME_SUFFIX}` : "";
 
-    if (!fs.existsSync(full)) {
-      fs.writeFileSync(full, svgCover(book.id, book.title), "utf8");
+  function isBlobUrl(url?: string): url is string {
+    if (!url) return false;
+    if (!/^https:\/\//i.test(url)) return false;
+    if (!blobHostname) return false;
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname === blobHostname;
+    } catch {
+      return false;
     }
   }
-}
+
+  function isLocalUploadUrl(url?: string): boolean {
+    if (!url) return false;
+    return url.startsWith("/uploads/");
+  }
+
+  function ensureCovers(books: BookRecord[]) {
+    for (const book of books) {
+      if (isAbsoluteUrl(book.cover_url)) continue;
+      const file = path.basename(book.cover_url || `cover-${book.id}.svg`);
+      const full = path.join(config.uploadsDir, file);
+
+      if (!fs.existsSync(full)) {
+        fs.writeFileSync(full, svgCover(book.id, book.title), "utf8");
+      }
+    }
+  }
 
   function uploadedUrl(file: Express.Multer.File) {
     return `/uploads/${file.filename}`;
   }
 
   function removeByUrl(url?: string) {
+    if (isAbsoluteUrl(url)) return;
+
     const file = extractUploadFilename(url);
     if (!file || /^cover-\d+\.svg$/.test(file)) return;
 
@@ -158,6 +189,16 @@ export function createCoverStorage(config: CoverStorageConfig) {
     }
   }
 
+  async function removeBlobByUrl(url?: string): Promise<void> {
+    if (!isBlobUrl(url)) return;
+    try {
+      const deleteBlob = config.delBlob ?? del;
+      await deleteBlob(url);
+    } catch (error) {
+      console.error("Failed to delete blob:", error);
+    }
+  }
+
   function createUploadMiddleware() {
     const mimeTypes = new Set<string>(COVER_MIME_LIST);
 
@@ -174,16 +215,10 @@ export function createCoverStorage(config: CoverStorageConfig) {
       limits: { fileSize: COVER_MAX_BYTES },
       fileFilter: (_req, file, cb) => {
         const ext = coverExt(file.originalname);
-        if (
-          ext &&
-          (mimeTypes.has(file.mimetype) ||
-            file.mimetype === "application/octet-stream")
-        ) {
+        if (ext && (mimeTypes.has(file.mimetype) || file.mimetype === "application/octet-stream")) {
           cb(null, true);
         } else {
-          cb(
-            Object.assign(new Error(MESSAGE.coverType), { field: FIELD_COVER }),
-          );
+          cb(Object.assign(new Error(MESSAGE.coverType), { field: FIELD_COVER }));
         }
       },
     });
@@ -194,6 +229,9 @@ export function createCoverStorage(config: CoverStorageConfig) {
     createUploadMiddleware,
     uploadedUrl,
     removeByUrl,
+    isBlobUrl,
+    isLocalUploadUrl,
+    removeBlobByUrl,
   };
 }
 

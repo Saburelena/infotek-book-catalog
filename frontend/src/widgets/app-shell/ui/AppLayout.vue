@@ -26,9 +26,13 @@
         </nav>
 
         <div class="masthead-actions">
+          <ThemeToggle />
           <template v-if="isUser">
             <span class="who">{{ user?.username }}</span>
             <button class="btn btn-ghost" type="button" @click="onLogout">Выйти</button>
+          </template>
+          <template v-else-if="route.path === ROUTES.login">
+            <RouterLink :to="ROUTES.home" class="btn btn-primary">Назад</RouterLink>
           </template>
           <RouterLink v-else :to="ROUTES.login" class="btn btn-primary">Войти</RouterLink>
         </div>
@@ -41,6 +45,7 @@
 
     <footer class="footer">
       <p>Инфотек · каталог книг</p>
+      <span class="footer-sep" aria-hidden="true">·</span>
       <nav class="footer-nav" aria-label="Разделы в подвале">
         <RouterLink
           v-for="item in nav"
@@ -52,6 +57,7 @@
           {{ item.label }}
         </RouterLink>
       </nav>
+      <span class="footer-sep" aria-hidden="true">·</span>
       <p>© 2026</p>
     </footer>
   </div>
@@ -61,6 +67,7 @@
 import { useRoute, useRouter } from "vue-router";
 
 import { useAuth } from "@/features/auth";
+import ThemeToggle from "@/features/theme/ui/ThemeToggle.vue";
 import { ROUTES } from "@/shared/config/constants";
 
 const nav = [

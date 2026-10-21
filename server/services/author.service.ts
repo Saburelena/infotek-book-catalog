@@ -13,11 +13,9 @@ export class AuthorService {
   list(params: { search?: unknown; page?: unknown; perPage?: unknown }) {
     let items = [...this.repository.snapshot().authors];
 
-    if (params.search) {
-      const query = String(params.search).toLowerCase();
-      items = items.filter((author) =>
-        author.full_name.toLowerCase().includes(query),
-      );
+    if (typeof params.search === "string" && params.search) {
+      const query = params.search.toLowerCase();
+      items = items.filter((author) => author.full_name.toLowerCase().includes(query));
     }
 
     items.sort((a, b) => a.full_name.localeCompare(b.full_name, "ru"));
@@ -69,13 +67,9 @@ export class AuthorService {
 
     const store = this.repository.snapshot();
     store.books.forEach((book) => {
-      book.author_ids = book.author_ids.filter(
-        (authorId) => authorId !== author.id,
-      );
+      book.author_ids = book.author_ids.filter((authorId) => authorId !== author.id);
     });
-    store.subscriptions = store.subscriptions.filter(
-      (item) => item.author_id !== author.id,
-    );
+    store.subscriptions = store.subscriptions.filter((item) => item.author_id !== author.id);
 
     this.repository.persist(this.config.dataFile);
     return true;
@@ -96,5 +90,3 @@ export class AuthorService {
     };
   }
 }
-
-export type SerializedAuthor = ReturnType<AuthorService["serialize"]>;

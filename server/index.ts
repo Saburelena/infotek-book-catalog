@@ -4,6 +4,15 @@ import { createContainer } from "./container.js";
 const container = createContainer();
 const app = createApp(container);
 
+process.on("unhandledRejection", (reason) => {
+  console.error("[unhandledRejection]", reason);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("[uncaughtException]", error);
+  process.exit(1);
+});
+
 export default app;
 
 if (process.env.NODE_ENV !== "production") {

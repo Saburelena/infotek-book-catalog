@@ -1,0 +1,113 @@
+@use "./tokens" as *;
+
+/* Оверлеи монтируются в body (Teleport) — вне #app, поэтому глобальные, но с префиксом app- */
+
+.app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--overlay);
+}
+
+.app-modal {
+  width: min(var(--modal-max), 100%);
+  max-height: min(90vh, 720px);
+  max-height: min(90dvh, 720px);
+  padding: var(--space-4);
+  overflow: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.app-modal h2 {
+  margin: 0 0 var(--space-3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.app-modal .ui-stack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.app-modal .ui-stack label {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+}
+
+.app-modal .ui-stack input:hover:not(:disabled, :focus) {
+  border-color: var(--field-hover-border);
+}
+
+.app-modal .ui-stack input:focus {
+  outline: none;
+  border-color: var(--burgundy);
+  box-shadow: var(--ring-ink);
+}
+
+.app-modal .ui-stack .field-error {
+  margin: 6px 0 0;
+  font-size: var(--text-md);
+  color: var(--burgundy);
+}
+
+.app-modal .ui-row {
+  gap: var(--space-2);
+  margin-bottom: 0;
+}
+
+.app-toasts {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-toast);
+  display: grid;
+  gap: var(--space-2);
+  max-width: calc(100% - var(--space-4) * 2);
+}
+
+.app-toast {
+  max-width: none;
+  padding: var(--space-3) var(--space-4);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.app-toast-ok {
+  color: var(--gold-2);
+  background: var(--burgundy);
+}
+
+.app-toast-err {
+  color: var(--cream);
+  background: var(--leather);
+}
+
+.state-empty {
+  padding: var(--space-8) var(--space-4);
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (min-width: #{$bp-sm}) {
+  .app-toasts {
+    left: auto;
+  }
+
+  .app-toast {
+    max-width: var(--toast-max);
+  }
+
+  .app-modal {
+    padding: var(--space-6);
+  }
+}

@@ -1,0 +1,197 @@
+// Breakpoints для @media.
+// CSS не позволяет использовать переменные в @media,
+// поэтому значения задаются через Sass-переменные и интерполяцию: #{$bp-lg}.
+$bp-lg: 1100px;
+$bp-md: 900px;
+$bp-sm: 560px;
+$bp-xs: 395px;
+$bp-xxs: 320px;
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --content-max: 1240px;
+  --content-gutter: 40px;
+  --content-gutter-sm: 16px;
+  --content-gutter-xs: 16px;
+  --content-gutter-xxs: 8px;
+  --shell-width: min(var(--content-max), calc(100% - var(--content-gutter)));
+  --shell-width-sm: min(var(--content-max), calc(100% - var(--content-gutter-sm) * 2));
+  --shell-width-xs: min(var(--content-max), calc(100% - var(--content-gutter-xs)));
+  --shell-width-xxs: min(var(--content-max), calc(100% - var(--content-gutter-xxs)));
+  --masthead-min-h: 80px;
+  --masthead-actions-w: 200px;
+  --modal-max: 440px;
+  --toast-max: 320px;
+  --form-narrow: 460px;
+  --cover-max: 300px;
+  --filter-year-min: 168px;
+  --filter-author-min: 200px;
+  --detail-cover-min: 220px;
+  --author-card-min: 240px;
+  --avatar-size: 44px;
+  --rank-col: 48px;
+  --bar-h: 6px;
+  --chip-min-h: 36px;
+  --list-row-h: 52px;
+  --rank-row-h: 64px;
+  --author-row-h: 68px;
+  --lift: 10px;
+  --blur: 16px;
+  --cover-ratio: 300 / 420;
+  --grid-gap-xl: 36px;
+  --grid-gap-lg: 28px;
+  --grid-gap-md: 22px;
+  --z-masthead: 10;
+  --z-select: 12;
+  --z-modal: 20;
+  --z-toast: 30;
+  --z-skip: 40;
+  --select-list-pad: 10px;
+  --select-list-pad-end: 14px;
+  --select-option-h: 44px;
+  --icon-sm: 16px;
+  --select-list-rows: 6;
+  --select-list-max: calc(var(--select-option-h) * var(--select-list-rows));
+  --scrollbar-size: 5px;
+  --scrollbar-thumb: rgb(106 58 40 / 55%);
+  --scrollbar-fade-ms: 0.45s;
+  --scrollbar-page-thumb: rgb(90 53 24 / 35%);
+  --scrollbar-page-thumb-hover: rgb(90 53 24 / 55%);
+  --field-h-xs: 36px;
+  --field-pad-xs: 10px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --field-h: 44px;
+  --field-pad: 16px;
+  --btn-pad-x: 18px;
+  --chevron: 12px;
+  --chevron-h: 8px;
+  --text-2xs: 0.72rem;
+  --text-xs: 0.78rem;
+  --text-sm: 0.84rem;
+  --text-md: 0.88rem;
+  --text-base: 0.92rem;
+  --text-lg: 1.05rem;
+  --text-xl: 1.08rem;
+  --text-2xl: 1.12rem;
+  --text-3xl: 1.35rem;
+  --text-4xl: 1.4rem;
+  --text-5xl: 1.6rem;
+  --text-display: clamp(2.1rem, 4.2vw, 3.5rem);
+  --lh-tight: 1.02;
+  --lh-snug: 1.22;
+  --lh-body: 1.55;
+  --track-wide: 0.1em;
+  --track-wider: 0.14em;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 0.28s;
+  --duration-press: 0.12s;
+  --serif: "Lora", "Palatino Linotype", "Times New Roman", serif;
+  --ring-gold: 0 0 0 3px var(--gold-ring);
+  --ring-ink: 0 0 0 3px var(--burgundy-strong);
+  --focus-ring: 0 0 0 3px var(--gold-ring);
+  --press-scale: 0.98;
+  --page-glow: radial-gradient(ellipse at 50% -10%, var(--burgundy-glow), transparent 46%);
+  --page-grad: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 48%, var(--page-bottom) 100%);
+  --cover-empty-grad: linear-gradient(
+    160deg,
+    var(--cover-empty-from) 0%,
+    var(--cover-empty-mid) 48%,
+    var(--cover-empty-to) 100%
+  );
+  --shadow: 0 16px 36px var(--ink-shadow-4);
+  --shadow-card: 0 1px 1px var(--ink-shadow), 0 6px 10px var(--ink-shadow-2), 0 14px 22px var(--ink-shadow-3);
+  --shadow-card-hover:
+    0 16px 20px var(--ink-shadow-4), 0 32px 40px var(--ink-shadow-5), 0 52px 72px var(--ink-shadow-6);
+  --shadow-detail: 0 1px 2px var(--ink-shadow-7), 0 12px 22px var(--ink-shadow-8), 0 28px 48px var(--ink-shadow-6);
+}
+
+.theme-light {
+  --vellum: #f6ead0;
+  --ink: #4a2e1c;
+  --ink-strong: #5a3512;
+  --muted: #6e5340;
+  --burgundy: #6a3a28;
+  --burgundy-2: #522c1e;
+  --leather: #3a2216;
+  --gold: #c4a15a;
+  --gold-2: #e2c98a;
+  --cream: #f3e6c8;
+  --page: #e4d0a6;
+  --page-top: #f3e4c4;
+  --page-mid: #e6d0a4;
+  --page-bottom: #dcc49a;
+  --cover-empty-from: #6a3224;
+  --cover-empty-mid: #3a1810;
+  --cover-empty-to: #24100c;
+  --line: rgb(90 48 24 / 18%);
+  --card: rgb(247 236 210 / 92%);
+  --masthead-bg: rgb(244 230 200 / 90%);
+  --overlay: rgb(28 17 12 / 46%);
+  --burgundy-soft: rgb(106 58 40 / 8%);
+  --burgundy-mid: rgb(106 58 40 / 12%);
+  --burgundy-strong: rgb(106 58 40 / 28%);
+  --burgundy-glow: rgb(106 58 40 / 10%);
+  --ink-shadow: rgb(40 16 8 / 50%);
+  --ink-shadow-2: rgb(40 16 8 / 28%);
+  --ink-shadow-3: rgb(40 16 8 / 16%);
+  --ink-shadow-4: rgb(40 18 8 / 14%);
+  --ink-shadow-5: rgb(40 16 8 / 22%);
+  --ink-shadow-6: rgb(40 16 8 / 20%);
+  --ink-shadow-7: rgb(40 16 8 / 45%);
+  --ink-shadow-8: rgb(40 16 8 / 24%);
+  --gold-ring: rgb(196 161 90 / 45%);
+  --ghost-hover: rgb(106 58 40 / 8%);
+  --danger-hover: #4a2c1c;
+  --field-hover-border: rgb(90 48 24 / 32%);
+}
+
+.theme-dark {
+  --vellum: #1e1814;
+  --ink: #d4c0a0;
+  --ink-strong: #e8d4b4;
+  --muted: #9a8468;
+  --burgundy: #a05840;
+  --burgundy-2: #b86848;
+  --leather: #2a1a10;
+  --gold: #c4a15a;
+  --gold-2: #e2c98a;
+  --page: #14100c;
+  --page-top: #1a1410;
+  --page-mid: #16120e;
+  --page-bottom: #120e0a;
+  --cover-empty-from: #4a2820;
+  --cover-empty-mid: #2a1410;
+  --cover-empty-to: #1a0a08;
+  --line: rgb(180 160 130 / 18%);
+  --card: rgb(30 24 18 / 92%);
+  --masthead-bg: rgb(24 20 16 / 90%);
+  --overlay: rgb(10 6 4 / 60%);
+  --burgundy-soft: rgb(160 88 64 / 12%);
+  --burgundy-mid: rgb(160 88 64 / 18%);
+  --burgundy-strong: rgb(160 88 64 / 35%);
+  --burgundy-glow: rgb(160 88 64 / 8%);
+  --ink-shadow: rgb(0 0 0 / 60%);
+  --ink-shadow-2: rgb(0 0 0 / 40%);
+  --ink-shadow-3: rgb(0 0 0 / 30%);
+  --ink-shadow-4: rgb(0 0 0 / 35%);
+  --ink-shadow-5: rgb(0 0 0 / 40%);
+  --ink-shadow-6: rgb(0 0 0 / 35%);
+  --ink-shadow-7: rgb(0 0 0 / 50%);
+  --ink-shadow-8: rgb(0 0 0 / 30%);
+  --gold-ring: rgb(196 161 90 / 80%);
+  --ghost-hover: rgb(160 88 64 / 12%);
+  --danger-hover: #6a3828;
+  --field-hover-border: rgb(180 160 130 / 35%);
+}

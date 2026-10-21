@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Инфотек — каталог книг</title>
+    <!-- Инициализация темы до отрисовки: убирает FOUC. Дефолт темы — только здесь; ThemeToggle.vue только читает готовое состояние. -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        if (stored !== "dark" && stored !== "light") {
+          stored = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.classList.add("theme-" + stored);
+        document.documentElement.dataset.theme = stored;
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,7 +24,7 @@
     />
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app" class="app-root"></div>
     <script type="module" src="/src/app/main.ts"></script>
   </body>
 </html>

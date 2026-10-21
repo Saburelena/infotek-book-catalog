@@ -1,9 +1,5 @@
 import cors from "cors";
-import express, {
-  type NextFunction,
-  type Request,
-  type Response,
-} from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -16,6 +12,7 @@ import { createAuthRoutes } from "./routes/auth.routes.js";
 import { createBookRoutes } from "./routes/book.routes.js";
 import { createHealthRoutes } from "./routes/health.routes.js";
 import { createReportRoutes } from "./routes/report.routes.js";
+import { createUploadRoutes } from "./routes/upload.routes.js";
 import { fail } from "./utils/response.js";
 
 export function createApp(container: AppContainer) {
@@ -24,7 +21,7 @@ export function createApp(container: AppContainer) {
   app.use(requestLogger);
   app.use(
     cors({
-      origin: true,
+      origin: process.env.FRONTEND_URL || true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
     }),
@@ -33,31 +30,16 @@ export function createApp(container: AppContainer) {
   app.use("/uploads", express.static(container.config.uploadsDir));
 
   app.use(`${container.config.apiPrefix}/health`, createHealthRoutes());
-  app.use(
-    `${container.config.apiPrefix}/auth`,
-    createAuthRoutes(container.auth),
-  );
-  app.use(
-    `${container.config.apiPrefix}/books`,
-    createBookRoutes(container.books, container.covers, container.auth),
-  );
+  app.use(`${container.config.apiPrefix}/auth`, createAuthRoutes(container.auth));
+  app.use(`${container.config.apiPrefix}/books`, createBookRoutes(container.books, container.covers, container.auth));
+  app.use(`${container.config.apiPrefix}/uploads`, createUploadRoutes(container.auth));
   app.use(
     `${container.config.apiPrefix}/authors`,
-    createAuthorRoutes(
-      container.authors,
-      container.subscriptions,
-      container.auth,
-    ),
+    createAuthorRoutes(container.authors, container.subscriptions, container.auth),
   );
-  app.use(
-    `${container.config.apiPrefix}/reports`,
-    createReportRoutes(container.reports),
-  );
+  app.use(`${container.config.apiPrefix}/reports`, createReportRoutes(container.reports));
 
-  if (
-    container.config.isProduction &&
-    fs.existsSync(container.config.publicDir)
-  ) {
+  if (container.config.isProduction && fs.existsSync(container.config.publicDir)) {
     app.use(express.static(container.config.publicDir));
 
     app.get("*", (req, res, next) => {
@@ -72,9 +54,7 @@ export function createApp(container: AppContainer) {
     fail(
       res,
       HTTP_STATUS.notFound,
-      req.path.startsWith(container.config.apiPrefix)
-        ? ["Маршрут не найден"]
-        : ["Страница не найдена"],
+      req.path.startsWith(container.config.apiPrefix) ? ["Маршрут не найден"] : ["Страница не найдена"],
     ),
   );
 

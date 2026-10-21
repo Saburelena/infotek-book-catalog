@@ -19,6 +19,7 @@ export interface BookService {
   list(params: BookListParams, signal?: AbortSignal): Promise<ListPayload<Book>>;
   get(id: number, signal?: AbortSignal): Promise<Book>;
   save(form: FormData, id?: number, signal?: AbortSignal): Promise<Book>;
+  uploadCover(file: File): Promise<string>;
   remove(id: number, signal?: AbortSignal): Promise<void>;
 }
 
@@ -105,9 +106,10 @@ export function createAuthStore(session: SessionStorage): AuthStore {
 
 export function createToastService(): ToastService {
   const items = shallowRef<Toast[]>([]);
+  let nextId = Date.now();
 
   function push(kind: ToastKind, text: string) {
-    const id = Date.now() + Math.random();
+    const id = nextId++;
     items.value = [...items.value, { id, kind, text }];
     window.setTimeout(() => {
       items.value = items.value.filter((item) => item.id !== id);

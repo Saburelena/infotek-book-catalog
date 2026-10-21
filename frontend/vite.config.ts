@@ -2,7 +2,10 @@ import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
-const DEV_API_ORIGIN = "http://localhost:3001";
+const DEV_API_ORIGIN =
+  typeof import.meta !== "undefined" && import.meta.env?.VITE_API_ORIGIN
+    ? import.meta.env.VITE_API_ORIGIN
+    : "http://localhost:3001";
 
 export default defineConfig({
   plugins: [vue()],
@@ -18,5 +21,11 @@ export default defineConfig({
       "/api": DEV_API_ORIGIN,
       "/uploads": DEV_API_ORIGIN,
     },
+  },
+  build: {
+    cssMinify: "lightningcss",
+  },
+  css: {
+    transformer: "lightningcss",
   },
 });

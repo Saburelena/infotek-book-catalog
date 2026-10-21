@@ -3,7 +3,7 @@ import { computed, toValue, type MaybeRefOrGetter } from "vue";
 
 import { useAppServices } from "@/shared/di/container";
 import { queryKeys } from "@/shared/api/queryKeys";
-import { parseYear } from "@/shared/lib/utils";
+import { parseYear, uniqueYears } from "@/shared/lib/utils";
 
 export function useCatalogYears(extra?: MaybeRefOrGetter<string | number | undefined>) {
   const services = useAppServices();
@@ -14,9 +14,10 @@ export function useCatalogYears(extra?: MaybeRefOrGetter<string | number | undef
 
   return {
     years: computed(() =>
-      [...new Set([Number(toValue(extra)), ...(books.data.value?.items ?? []).map((book) => book.year)])]
-        .filter((year) => year > 0)
-        .sort((a, b) => b - a),
+      uniqueYears(
+        (books.data.value?.items ?? []).map((book) => book.year),
+        toValue(extra),
+      ),
     ),
     loading: books.isLoading,
     error: books.isError,

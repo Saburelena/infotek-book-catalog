@@ -1,4 +1,4 @@
-import type { UserRole } from "@/shared/config/constants";
+export type UserRole = "user";
 
 export type AuthUser = {
   id: number;
@@ -64,15 +64,15 @@ export type LoginResponse = {
 };
 
 export type BookListParams = {
-  page?: number;
-  perPage?: number;
-  search?: string;
-  year?: number;
-  author_id?: number;
+  page?: number | undefined;
+  perPage?: number | undefined;
+  search?: string | undefined;
+  year?: number | undefined;
+  author_id?: number | undefined;
 };
 
 export type AuthorListParams = {
-  page?: number;
-  perPage?: number;
-  search?: string;
+  page?: number | undefined;
+  perPage?: number | undefined;
+  search?: string | undefined;
 };

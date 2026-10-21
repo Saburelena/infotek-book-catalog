@@ -5,6 +5,7 @@
     :data="data"
     loading-text="Загружаем книгу…"
     error-text="Книга не найдена."
+    :skeleton="true"
   >
     <template #default="{ data: book }">
       <article class="detail">

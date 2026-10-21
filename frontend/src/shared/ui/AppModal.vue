@@ -29,7 +29,7 @@ const props = withDefaults(
     describedBy?: string;
     busy?: boolean;
   }>(),
-  { describedBy: undefined, busy: false },
+  { describedBy: "", busy: false },
 );
 
 const emit = defineEmits<{ close: [] }>();

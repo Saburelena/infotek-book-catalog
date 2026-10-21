@@ -1,0 +1,11 @@
+node_modules
+frontend/dist
+server/dist
+frontend/node_modules
+server/node_modules
+coverage
+*.local
+package-lock.json
+frontend/package-lock.json
+server/package-lock.json
+AI_PROJECT_CONTEXT.md

@@ -13,7 +13,7 @@ const props = withDefaults(
     emptyLabel?: string;
     label?: string;
   }>(),
-  { years: () => [], emptyLabel: undefined, label: "Год" },
+  { years: () => [], emptyLabel: "", label: "Год" },
 );
 
 const model = defineModel<string | number>({ required: true });

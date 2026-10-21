@@ -11,9 +11,17 @@ declare module "vue-router" {
   }
 }
 
-function childPath(path: string) {
-  return path.startsWith("/") ? path.slice(1) : path;
-}
+const CHILD_ROUTES = {
+  authors: "authors",
+  report: "report",
+  login: "login",
+  bookNew: "books/new",
+  authorNew: "authors/new",
+  bookEdit: (id: string) => `books/${id}/edit`,
+  authorEdit: (id: string) => `authors/${id}/edit`,
+  book: (id: string) => `books/${id}`,
+  author: (id: string) => `authors/${id}`,
+} as const;
 
 export function createAppRouter(auth: AuthStore) {
   const router = createRouter({
@@ -24,45 +32,39 @@ export function createAppRouter(auth: AuthStore) {
         component: () => import("@/widgets/app-shell/ui/AppLayout.vue"),
         children: [
           { path: "", component: () => import("@/pages/books/ui/BooksPage.vue") },
+          { path: CHILD_ROUTES.authors, component: () => import("@/pages/authors/ui/AuthorsPage.vue") },
+          { path: CHILD_ROUTES.report, component: () => import("@/pages/report/ui/ReportPage.vue") },
           {
-            path: childPath(ROUTES.authors),
-            component: () => import("@/pages/authors/ui/AuthorsPage.vue"),
-          },
-          {
-            path: childPath(ROUTES.report),
-            component: () => import("@/pages/report/ui/ReportPage.vue"),
-          },
-          {
-            path: childPath(ROUTES.login),
+            path: CHILD_ROUTES.login,
             component: () => import("@/pages/login/ui/LoginPage.vue"),
             meta: { guest: true },
           },
           {
-            path: childPath(ROUTES.bookNew),
+            path: CHILD_ROUTES.bookNew,
             component: () => import("@/pages/book-edit/ui/BookEditPage.vue"),
             meta: { auth: true },
           },
           {
-            path: childPath(ROUTES.bookEdit(ROUTE_ID)),
+            path: CHILD_ROUTES.bookEdit(ROUTE_ID),
             component: () => import("@/pages/book-edit/ui/BookEditPage.vue"),
             meta: { auth: true },
           },
           {
-            path: childPath(ROUTES.authorNew),
+            path: CHILD_ROUTES.authorNew,
             component: () => import("@/pages/author-edit/ui/AuthorEditPage.vue"),
             meta: { auth: true },
           },
           {
-            path: childPath(ROUTES.authorEdit(ROUTE_ID)),
+            path: CHILD_ROUTES.authorEdit(ROUTE_ID),
             component: () => import("@/pages/author-edit/ui/AuthorEditPage.vue"),
             meta: { auth: true },
           },
           {
-            path: childPath(ROUTES.book(ROUTE_ID)),
+            path: CHILD_ROUTES.book(ROUTE_ID),
             component: () => import("@/pages/book/ui/BookPage.vue"),
           },
           {
-            path: childPath(ROUTES.author(ROUTE_ID)),
+            path: CHILD_ROUTES.author(ROUTE_ID),
             component: () => import("@/pages/author/ui/AuthorPage.vue"),
           },
           { path: ":pathMatch(.*)*", redirect: ROUTES.home },

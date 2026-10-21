@@ -29,11 +29,7 @@ export class ReportService {
           books_count: booksCount,
         };
       })
-      .sort(
-        (a, b) =>
-          b.books_count - a.books_count ||
-          a.full_name.localeCompare(b.full_name, "ru"),
-      )
+      .sort((a, b) => b.books_count - a.books_count || a.full_name.localeCompare(b.full_name, "ru"))
       .slice(0, TOP_AUTHORS)
       .map((item, index) => ({ rank: index + 1, ...item }));
 

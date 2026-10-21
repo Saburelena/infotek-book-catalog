@@ -5,19 +5,26 @@
     :data="data"
     loading-text="Загружаем автора…"
     error-text="Автор не найден."
+    :skeleton="true"
   >
     <template #default="{ data: author }">
       <section>
+        <nav class="breadcrumb" aria-label="Навигация">
+          <RouterLink :to="ROUTES.home">Авторы</RouterLink>
+          <span aria-hidden="true">/</span>
+          <span>{{ author.full_name }}</span>
+        </nav>
+
         <PageHeader :title="author.full_name">
           <template #extra>
             <p class="muted">{{ booksSummary }}</p>
           </template>
-          <div class="ui-row wrap">
-            <CrudActions :edit-to="ROUTES.authorEdit(author.id)" @delete="deleteOpen = true">
-              <button class="btn btn-primary" type="button" @click="subscribeOpen = true">Подписаться на SMS</button>
-            </CrudActions>
-          </div>
         </PageHeader>
+        <div class="ui-row wrap">
+          <CrudActions :edit-to="ROUTES.authorEdit(author.id)" @delete="deleteOpen = true">
+            <button class="btn btn-primary" type="button" @click="subscribeOpen = true">Подписаться на SMS</button>
+          </CrudActions>
+        </div>
 
         <p v-if="author.books.length === 0" class="state-empty">У автора пока нет книг в каталоге.</p>
         <ul v-else class="book-list">

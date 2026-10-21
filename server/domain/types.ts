@@ -1,4 +1,4 @@
-import { ROLE_USER } from "../constants.js";
+import type { ROLE_USER } from "../constants.js";
 
 export type UserRole = typeof ROLE_USER;
 

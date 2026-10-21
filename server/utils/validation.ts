@@ -15,19 +15,26 @@ import {
 } from "../constants.js";
 import type { AuthorRecord, FieldError } from "../domain/types.js";
 
+// Приводит unknown к строке без риска [object Object]. Числа и булевы — допустимы, объекты и массивы — пустая строка.
+function safeString(raw: unknown): string {
+  if (typeof raw === "string") return raw;
+  if (typeof raw === "number") return String(raw);
+  if (typeof raw === "boolean") return String(raw);
+  return "";
+}
 export function isValidIsbn(isbn: string) {
   const digits = String(isbn).replaceAll("-", "");
   return ISBN10_PATTERN.test(digits) || ISBN13_PATTERN.test(digits);
 }
 
 export function parseAuthorName(raw: unknown) {
-  const fullName = String(raw || "").trim();
+  const fullName = safeString(raw).trim();
   if (!fullName) {
     return {
       error: {
         field: "full_name",
         message: "Укажите ФИО автора",
-      } as FieldError,
+      },
     };
   }
 
@@ -36,7 +43,7 @@ export function parseAuthorName(raw: unknown) {
       error: {
         field: "full_name",
         message: "ФИО слишком длинное",
-      } as FieldError,
+      },
     };
   }
 
@@ -46,17 +53,9 @@ export function parseAuthorName(raw: unknown) {
 export function parseAuthorIds(raw: unknown) {
   if (raw == null || raw === "") return [];
 
-  const values = Array.isArray(raw)
-    ? raw.flatMap((value) => String(value).split(","))
-    : String(raw).split(",");
+  const values = Array.isArray(raw) ? raw.flatMap((value) => String(value).split(",")) : safeString(raw).split(",");
 
-  return [
-    ...new Set(
-      values
-        .map((value) => Number(value))
-        .filter((id) => Number.isInteger(id) && id > 0),
-    ),
-  ];
+  return [...new Set(values.map((value) => Number(value)).filter((id) => Number.isInteger(id) && id > 0))];
 }
 
 export function validateBookInput(
@@ -68,12 +67,10 @@ export function validateBookInput(
   },
 ) {
   const errors: FieldError[] = [];
-  const title = body.title == null ? undefined : String(body.title).trim();
-  const year =
-    body.year === undefined || body.year === "" ? undefined : Number(body.year);
-  const description =
-    body.description == null ? undefined : String(body.description);
-  const isbn = body.isbn == null ? undefined : String(body.isbn).trim();
+  const title = body.title == null ? undefined : safeString(body.title).trim();
+  const year = body.year === undefined || body.year === "" ? undefined : Number(body.year);
+  const description = body.description == null ? undefined : safeString(body.description);
+  const isbn = body.isbn == null ? undefined : safeString(body.isbn).trim();
   const rawIds = body.author_ids ?? body["author_ids[]"];
   const authorIds = rawIds === undefined ? undefined : parseAuthorIds(rawIds);
 
@@ -86,12 +83,7 @@ export function validateBookInput(
   }
 
   if (options.requireAll || year !== undefined) {
-    if (
-      year === undefined ||
-      !Number.isInteger(year) ||
-      year < YEAR_MIN ||
-      year > YEAR_MAX
-    ) {
+    if (year === undefined || !Number.isInteger(year) || year < YEAR_MIN || year > YEAR_MAX) {
       errors.push({ field: "year", message: MESSAGE.year });
     }
   }
@@ -110,9 +102,7 @@ export function validateBookInput(
         message: "Выберите хотя бы одного автора",
       });
     } else {
-      const unknown = authorIds.filter(
-        (id) => !options.authors.some((author) => author.id === id),
-      );
+      const unknown = authorIds.filter((id) => !options.authors.some((author) => author.id === id));
       if (unknown.length) {
         errors.push({
           field: "author_ids",
@@ -143,12 +133,9 @@ export function validateBookInput(
 }
 
 export function normalizePhone(phone: unknown) {
-  const digits = String(phone || "").replace(/\D/g, "");
+  const digits = safeString(phone).replace(/\D/g, "");
 
-  if (
-    digits.length === PHONE_WITH_TRUNK_DIGITS &&
-    digits.startsWith(PHONE_TRUNK)
-  ) {
+  if (digits.length === PHONE_WITH_TRUNK_DIGITS && digits.startsWith(PHONE_TRUNK)) {
     return `${PHONE_COUNTRY}${digits.slice(1)}`;
   }
 

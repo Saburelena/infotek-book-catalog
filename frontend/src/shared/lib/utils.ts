@@ -82,7 +82,13 @@ export function phoneError(phone: string) {
 }
 
 export function safeRedirect(value: unknown) {
-  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || value.startsWith(ROUTES.login)) {
+  if (
+    typeof value !== "string" ||
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    value.includes("://") ||
+    value.startsWith(ROUTES.login)
+  ) {
     return ROUTES.home;
   }
   return value;

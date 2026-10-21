@@ -6,11 +6,7 @@ import type { AuthService } from "../services/auth.service.js";
 import { createAuthRequired } from "../middleware/auth.js";
 import type { SubscriptionService } from "../services/subscription.service.js";
 
-export function createAuthorRoutes(
-  authors: AuthorService,
-  subscriptions: SubscriptionService,
-  auth: AuthService,
-) {
+export function createAuthorRoutes(authors: AuthorService, subscriptions: SubscriptionService, auth: AuthService) {
   const router = Router();
   const controller = createAuthorController(authors, subscriptions);
   const authRequired = createAuthRequired(auth);

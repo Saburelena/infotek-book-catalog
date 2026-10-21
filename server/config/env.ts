@@ -2,20 +2,13 @@ import path from "node:path";
 
 import { fileURLToPath } from "node:url";
 
-import {
-  API_PREFIX,
-  DEFAULT_PORT,
-  JWT_EXPIRES_IN,
-  JWT_TTL_MS,
-} from "../constants.js";
+import { API_PREFIX, DEFAULT_PORT, JWT_EXPIRES_IN, JWT_TTL_MS } from "../constants.js";
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 const isCompiled = path.basename(path.dirname(moduleDir)) === "dist";
 
-const serverRoot = isCompiled
-  ? path.resolve(moduleDir, "..", "..")
-  : path.resolve(moduleDir, "..");
+const serverRoot = isCompiled ? path.resolve(moduleDir, "..", "..") : path.resolve(moduleDir, "..");
 
 export type ServerConfig = {
   port: number;
@@ -24,6 +17,7 @@ export type ServerConfig = {
   jwtExpiresIn: typeof JWT_EXPIRES_IN;
   jwtTtlMs: number;
   smsApiKey: string;
+  blobStoreId: string;
   dataFile: string;
   uploadsDir: string;
   publicDir: string;
@@ -48,6 +42,7 @@ export function createServerConfig(): ServerConfig {
     jwtExpiresIn: JWT_EXPIRES_IN,
     jwtTtlMs: JWT_TTL_MS,
     smsApiKey: process.env.SMSPILOT_API_KEY || "",
+    blobStoreId: process.env.BLOB_STORE_ID || "",
     dataFile: process.env.VERCEL
       ? path.join("/tmp", "infotek-store.json")
       : path.join(serverRoot, "data", "store.json"),

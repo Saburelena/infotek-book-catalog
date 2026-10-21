@@ -33,7 +33,6 @@ export const HTTP_STATUS = {
   requestTimeout: 408,
 } as const;
 export const ROLE_USER = "user";
-export type UserRole = typeof ROLE_USER;
 export const TOAST_KIND = { ok: "ok", err: "err" } as const;
 export type ToastKind = (typeof TOAST_KIND)[keyof typeof TOAST_KIND];
 

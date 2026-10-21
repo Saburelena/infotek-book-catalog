@@ -1,4 +1,3 @@
-import { ROLE_USER } from "@/shared/config/constants";
 import type {
   Author,
   AuthorShort,
@@ -9,6 +8,7 @@ import type {
   LoginResponse,
   Pagination,
   TopAuthor,
+  UserRole,
 } from "@/shared/types/entities";
 import { ApiError } from "./errors";
 
@@ -18,6 +18,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function badPayload(): never {
   throw new ApiError(500, [{ field: "base", message: "Некорректный ответ сервера" }]);
+}
+
+function isUserRole(value: unknown): value is UserRole {
+  return value === "user";
 }
 
 function asString(value: unknown, fallback = "") {
@@ -131,12 +135,7 @@ export function normalizeLogin(value: unknown): LoginResponse {
     badPayload();
   }
   const user = value.user;
-  if (
-    !isRecord(user) ||
-    typeof user.id !== "number" ||
-    typeof user.username !== "string" ||
-    typeof user.role !== "string"
-  ) {
+  if (!isRecord(user) || typeof user.id !== "number" || typeof user.username !== "string" || !isUserRole(user.role)) {
     badPayload();
   }
   return {
@@ -145,7 +144,7 @@ export function normalizeLogin(value: unknown): LoginResponse {
     user: {
       id: user.id,
       username: user.username,
-      role: user.role === ROLE_USER ? ROLE_USER : ROLE_USER,
+      role: user.role,
     },
   };
 }

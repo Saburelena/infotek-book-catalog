@@ -39,9 +39,7 @@ test("validates required book fields", () => {
     },
   );
 
-  assert.deepEqual(result.errors, [
-    { field: "cover", message: "Загрузите фото главной страницы" },
-  ]);
+  assert.deepEqual(result.errors, [{ field: "cover", message: "Загрузите фото главной страницы" }]);
 });
 
 test("accepts isbn with hyphens", () => {

@@ -1,0 +1,7 @@
+// Общие стили полей и кнопок: высота, граница, скругление, фон.
+@mixin field-base {
+  height: var(--field-h);
+  background-color: var(--vellum);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}

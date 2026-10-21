@@ -10,6 +10,6 @@
 import { useId } from "vue";
 import FieldError from "./FieldError.vue";
 
-withDefaults(defineProps<{ label: string; error?: string }>(), { error: "" });
+withDefaults(defineProps<{ label: string; error?: string | undefined }>(), { error: "" });
 const errorId = useId();
 </script>

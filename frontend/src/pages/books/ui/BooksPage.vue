@@ -16,7 +16,17 @@
 
     <template #filters>
       <form class="filters" @submit="submit">
-        <SearchField :value="filters.search" placeholder="Название, автор, описание или ISBN" aria-label="Поиск книг" />
+        <SearchField
+          :value="filters.search"
+          placeholder="Название, автор или ISBN"
+          aria-label="Поиск книг"
+          @update:value="(v) => set({ search: v })"
+          @search="
+            () => {
+              submit();
+            }
+          "
+        />
         <YearField v-model="year" :years="years" empty-label="Все годы" label="Год" />
         <SelectField v-model="authorId" label="Автор" :options="authorOptions" />
         <button class="btn btn-primary" type="submit">Найти</button>
@@ -56,20 +66,18 @@ const { isLoading, isError, data } = useBooksQuery(() => ({
   author_id: parseId(filters.value.authorId),
 }));
 const items = useQueryItems(data);
-const hasActiveFilters = computed(
-  () => Boolean(filters.value.search || filters.value.year || filters.value.authorId),
-);
+const hasActiveFilters = computed(() => Boolean(filters.value.search || filters.value.year || filters.value.authorId));
 const shouldResetInvalidDefaultPage = computed(() => {
   const pagination = data.value?.pagination;
   return Boolean(
     pagination &&
-      !isLoading.value &&
-      !isError.value &&
-      !hasActiveFilters.value &&
-      items.value.length === 0 &&
-      filters.value.page > 1 &&
-      pagination.total > 0 &&
-      filters.value.page > pagination.total_pages,
+    !isLoading.value &&
+    !isError.value &&
+    !hasActiveFilters.value &&
+    items.value.length === 0 &&
+    filters.value.page > 1 &&
+    pagination.total > 0 &&
+    filters.value.page > pagination.total_pages,
   );
 });
 

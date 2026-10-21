@@ -6,6 +6,7 @@
     :data="data"
     loading-text="Загружаем автора…"
     error-text="Автор не найден."
+    :skeleton="true"
   >
     <template #default="{ data: author }">
       <AuthorForm :id="id" :full-name="author.full_name" />

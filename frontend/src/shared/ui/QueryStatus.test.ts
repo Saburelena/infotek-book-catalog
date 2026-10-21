@@ -12,10 +12,26 @@ describe("QueryStatus", () => {
         error: false,
         loadingText: "Загружаем каталог",
         errorText: "Ошибка загрузки",
+        skeleton: false,
       },
     });
 
     expect(wrapper.text()).toContain("Загружаем каталог");
+    expect(wrapper.find('[role="status"]').exists()).toBe(true);
+  });
+
+  it("renders skeleton when skeleton is true", () => {
+    const wrapper = mount(QueryStatus, {
+      props: {
+        loading: true,
+        error: false,
+        loadingText: "Загружаем каталог",
+        errorText: "Ошибка загрузки",
+        skeleton: true,
+      },
+    });
+
+    expect(wrapper.find(".skeleton-line").exists()).toBe(true);
     expect(wrapper.find('[role="status"]').exists()).toBe(true);
   });
 

@@ -1,18 +1,8 @@
 import fs from "node:fs";
 
-import {
-  DEMO_USER,
-  authors as seedAuthors,
-  books as seedBooks,
-  subscriptions as seedSubs,
-} from "../seed.js";
-import type {
-  AuthorRecord,
-  BookRecord,
-  Store,
-  SubscriptionRecord,
-} from "../domain/types.js";
-// 
+import { DEMO_USER, authors as seedAuthors, books as seedBooks, subscriptions as seedSubs } from "../seed.js";
+import type { AuthorRecord, BookRecord, Store, SubscriptionRecord } from "../domain/types.js";
+//
 type StoreRepositoryOptions = {
   dataFile: string;
   onLoad: (books: BookRecord[]) => void;
@@ -24,34 +14,16 @@ function normalizeStore(value: unknown): Store | null {
   if (!value || typeof value !== "object") return null;
 
   const candidate = value as Record<string, unknown>;
-  const users = Array.isArray(candidate.users)
-    ? (candidate.users as Store["users"])
-    : [];
-  const authors = Array.isArray(candidate.authors)
-    ? (candidate.authors as AuthorRecord[])
-    : [];
-  const books = Array.isArray(candidate.books)
-    ? (candidate.books as BookRecord[])
-    : [];
-  const subscriptions = Array.isArray(candidate.subscriptions)
-    ? (candidate.subscriptions as SubscriptionRecord[])
-    : [];
-  const smsLog = Array.isArray(candidate.smsLog)
-    ? (candidate.smsLog as Store["smsLog"])
-    : [];
+  const users = Array.isArray(candidate.users) ? (candidate.users as Store["users"]) : [];
+  const authors = Array.isArray(candidate.authors) ? (candidate.authors as AuthorRecord[]) : [];
+  const books = Array.isArray(candidate.books) ? (candidate.books as BookRecord[]) : [];
+  const subscriptions = Array.isArray(candidate.subscriptions) ? (candidate.subscriptions as SubscriptionRecord[]) : [];
+  const smsLog = Array.isArray(candidate.smsLog) ? (candidate.smsLog as Store["smsLog"]) : [];
 
-  if (
-    !users.length &&
-    !authors.length &&
-    !books.length &&
-    !subscriptions.length
-  )
-    return null;
+  if (!users.length && !authors.length && !books.length && !subscriptions.length) return null;
 
   const candidateNext =
-    candidate.next && typeof candidate.next === "object"
-      ? (candidate.next as Record<string, unknown>)
-      : {};
+    candidate.next && typeof candidate.next === "object" ? (candidate.next as Record<string, unknown>) : {};
 
   const next = {
     author: Number(candidateNext.author ?? 0),
@@ -59,10 +31,7 @@ function normalizeStore(value: unknown): Store | null {
     sub: Number(candidateNext.sub ?? 0),
   };
 
-  const maxAuthorId = authors.reduce(
-    (max, author) => Math.max(max, author.id),
-    0,
-  );
+  const maxAuthorId = authors.reduce((max, author) => Math.max(max, author.id), 0);
   const maxBookId = books.reduce((max, book) => Math.max(max, book.id), 0);
   const maxSubId = subscriptions.reduce((max, sub) => Math.max(max, sub.id), 0);
 
@@ -96,9 +65,7 @@ export class StoreRepository {
   private load(options: StoreRepositoryOptions) {
     if (fs.existsSync(options.dataFile)) {
       try {
-        const parsed = JSON.parse(
-          fs.readFileSync(options.dataFile, "utf8"),
-        ) as unknown;
+        const parsed = JSON.parse(fs.readFileSync(options.dataFile, "utf8")) as unknown;
         const normalized = normalizeStore(parsed);
         if (normalized) {
           options.onLoad(normalized.books);

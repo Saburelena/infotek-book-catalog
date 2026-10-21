@@ -12,6 +12,7 @@
             autocomplete="off"
             :aria-invalid="invalid || undefined"
             :aria-describedby="describedby"
+            @blur="validateTitle"
           />
         </FormField>
 
@@ -25,6 +26,7 @@
               :maxlength="LIMIT.yearDigits"
               :aria-invalid="invalid || undefined"
               :aria-describedby="describedby"
+              @blur="validateYear"
             />
           </FormField>
 
@@ -37,6 +39,7 @@
               autocomplete="off"
               :aria-invalid="invalid || undefined"
               :aria-describedby="describedby"
+              @blur="validateIsbn"
             />
           </FormField>
         </div>
@@ -102,8 +105,18 @@ const props = defineProps<{ id: number | null; book?: Book }>();
 
 const { isLoading: authorsLoading, isError: authorsError, data: authorsData } = useAuthorsAllQuery();
 
-const { form, preview, errors, coverTitle, isPending, onCover, submit, cancel, LIMIT } = useBookEditor(
-  props.id,
-  props.book,
-);
+const {
+  form,
+  preview,
+  errors,
+  coverTitle,
+  isPending,
+  onCover,
+  submit,
+  validateTitle,
+  validateYear,
+  validateIsbn,
+  cancel,
+  LIMIT,
+} = useBookEditor(props.id, props.book);
 </script>

@@ -5,6 +5,9 @@
     :error="!loading"
     :loading-text="loadingText"
     :error-text="errorText"
+    :skeleton="skeleton"
+    :retryable="retryable"
+    @retry="$emit('retry')"
   />
   <slot v-else :data="data" />
 </template>
@@ -18,5 +21,9 @@ defineProps<{
   data?: T | null;
   loadingText: string;
   errorText: string;
+  skeleton?: boolean;
+  retryable?: boolean;
 }>();
+
+defineEmits<{ retry: [] }>();
 </script>

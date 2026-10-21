@@ -22,20 +22,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        '200':
+        "200":
           description: Успешная авторизация
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '401':
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
           description: Неверные учётные данные
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /books:
     get:
@@ -67,12 +67,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Список книг
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookListResponse'
+                $ref: "#/components/schemas/BookListResponse"
     post:
       summary: Создание книги
       description: Доступно только авторизованным пользователям.
@@ -85,24 +85,24 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BookForm'
+              $ref: "#/components/schemas/BookForm"
       responses:
-        '201':
+        "201":
           description: Книга создана
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookResponse'
-        '401':
+                $ref: "#/components/schemas/BookResponse"
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '422':
+        "422":
           description: Ошибки валидации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /books/{id}:
     parameters:
@@ -116,18 +116,18 @@ paths:
       tags:
         - Книги
       responses:
-        '200':
+        "200":
           description: Информация о книге
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookResponse'
-        '404':
+                $ref: "#/components/schemas/BookResponse"
+        "404":
           description: Книга не найдена
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       summary: Полное обновление книги
       tags:
@@ -139,26 +139,26 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BookForm'
+              $ref: "#/components/schemas/BookForm"
       responses:
-        '200':
+        "200":
           description: Книга обновлена
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookResponse'
-        '401':
+                $ref: "#/components/schemas/BookResponse"
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '404':
+        "404":
           description: Книга не найдена
-        '422':
+        "422":
           description: Ошибки валидации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     patch:
       summary: Частичное обновление книги
       tags:
@@ -170,26 +170,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookInput'
+              $ref: "#/components/schemas/BookInput"
       responses:
-        '200':
+        "200":
           description: Книга обновлена
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookResponse'
-        '401':
+                $ref: "#/components/schemas/BookResponse"
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '404':
+        "404":
           description: Книга не найдена
-        '422':
+        "422":
           description: Ошибки валидации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     delete:
       summary: Удаление книги
       tags:
@@ -197,13 +197,13 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '204':
+        "204":
           description: Книга удалена
-        '401':
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '404':
+        "404":
           description: Книга не найдена
 
   /authors:
@@ -228,12 +228,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Список авторов
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthorListResponse'
+                $ref: "#/components/schemas/AuthorListResponse"
     post:
       summary: Создание автора
       tags:
@@ -245,24 +245,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthorInput'
+              $ref: "#/components/schemas/AuthorInput"
       responses:
-        '201':
+        "201":
           description: Автор создан
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthorResponse'
-        '401':
+                $ref: "#/components/schemas/AuthorResponse"
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '422':
+        "422":
           description: Ошибки валидации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /authors/{id}:
     parameters:
@@ -271,23 +271,24 @@ paths:
         required: true
         schema:
           type: integer
+        description: ID автора
     get:
       summary: Информация об авторе и его книгах
       tags:
         - Авторы
       responses:
-        '200':
+        "200":
           description: Данные автора
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthorResponse'
-        '404':
+                $ref: "#/components/schemas/AuthorResponse"
+        "404":
           description: Автор не найден
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       summary: Обновление автора
       tags:
@@ -299,26 +300,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthorInput'
+              $ref: "#/components/schemas/AuthorInput"
       responses:
-        '200':
+        "200":
           description: Автор обновлён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthorResponse'
-        '401':
+                $ref: "#/components/schemas/AuthorResponse"
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '404':
+        "404":
           description: Автор не найден
-        '422':
+        "422":
           description: Ошибки валидации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     delete:
       summary: Удаление автора
       tags:
@@ -326,14 +327,72 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '204':
+        "204":
           description: Автор удалён
-        '401':
+        "401":
           description: Неавторизован
-        '403':
+        "403":
           description: Недостаточно прав
-        '404':
+        "404":
           description: Автор не найден
+
+  /authors/{id}/subscribe:
+    post:
+      summary: Подписка на SMS о новых книгах автора
+      description: Публичный endpoint. Не требует авторизации.
+      tags:
+        - Авторы
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID автора
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+              properties:
+                phone:
+                  type: string
+                  description: Номер телефона в формате 7XXXXXXXXXX
+      responses:
+        "201":
+          description: Подписка оформлена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      author_id:
+                        type: integer
+                      phone:
+                        type: string
+                      message:
+                        type: string
+        "400":
+          description: Неверный формат телефона
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Автор не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /reports/top-authors:
     get:
@@ -349,18 +408,18 @@ paths:
             type: integer
           description: Год выпуска книг
       responses:
-        '200':
+        "200":
           description: Список авторов
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TopAuthorsResponse'
-        '400':
+                $ref: "#/components/schemas/TopAuthorsResponse"
+        "400":
           description: Параметр year не указан или неверен
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -425,7 +484,7 @@ components:
         authors:
           type: array
           items:
-            $ref: '#/components/schemas/AuthorShort'
+            $ref: "#/components/schemas/AuthorShort"
 
     AuthorShort:
       type: object
@@ -445,7 +504,7 @@ components:
         books:
           type: array
           items:
-            $ref: '#/components/schemas/BookShort'
+            $ref: "#/components/schemas/BookShort"
 
     BookShort:
       type: object
@@ -513,7 +572,7 @@ components:
           type: boolean
           example: true
         data:
-          $ref: '#/components/schemas/Book'
+          $ref: "#/components/schemas/Book"
 
     AuthorResponse:
       type: object
@@ -522,7 +581,7 @@ components:
           type: boolean
           example: true
         data:
-          $ref: '#/components/schemas/Author'
+          $ref: "#/components/schemas/Author"
 
     BookListResponse:
       type: object
@@ -536,9 +595,9 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/Book'
+                $ref: "#/components/schemas/Book"
             pagination:
-              $ref: '#/components/schemas/Pagination'
+              $ref: "#/components/schemas/Pagination"
 
     AuthorListResponse:
       type: object
@@ -552,9 +611,9 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/AuthorShort'
+                $ref: "#/components/schemas/AuthorShort"
             pagination:
-              $ref: '#/components/schemas/Pagination'
+              $ref: "#/components/schemas/Pagination"
 
     TopAuthorsResponse:
       type: object
@@ -570,7 +629,7 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/TopAuthor'
+                $ref: "#/components/schemas/TopAuthor"
 
     TopAuthor:
       type: object
@@ -605,7 +664,7 @@ components:
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/ErrorItem'
+            $ref: "#/components/schemas/ErrorItem"
 
     ErrorItem:
       type: object

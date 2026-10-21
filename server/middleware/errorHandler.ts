@@ -14,45 +14,25 @@ function isJsonParseError(error: unknown) {
   );
 }
 
-export function createRejectUpload(covers: CoverStorage) {
-  return (
-    req: Request,
-    res: Response,
-    errors: Array<{ field: string; message: string }>,
-  ) => {
-    if (req.file) covers.removeByUrl(covers.uploadedUrl(req.file));
-    return fail(res, HTTP_STATUS.unprocessable, errors);
-  };
-}
-
 export function createErrorHandler(covers: CoverStorage) {
   return (err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof multer.MulterError) {
       if (err.code === "LIMIT_FILE_SIZE") {
-        return fail(res, HTTP_STATUS.unprocessable, [
-          { field: FIELD_COVER, message: MESSAGE.coverTooBig },
-        ]);
+        return fail(res, HTTP_STATUS.unprocessable, [{ field: FIELD_COVER, message: MESSAGE.coverTooBig }]);
       }
 
-      return fail(res, HTTP_STATUS.unprocessable, [
-        { field: FIELD_COVER, message: "Не удалось загрузить файл" },
-      ]);
+      return fail(res, HTTP_STATUS.unprocessable, [{ field: FIELD_COVER, message: "Не удалось загрузить файл" }]);
     }
 
     if (isJsonParseError(err)) {
-      return fail(res, HTTP_STATUS.badRequest, [
-        { field: "body", message: "Неверный JSON в запросе" },
-      ]);
+      return fail(res, HTTP_STATUS.badRequest, [{ field: "body", message: "Неверный JSON в запросе" }]);
     }
 
     if (
       err instanceof Error &&
-      ((err as { field?: string }).field === FIELD_COVER ||
-        err.message === MESSAGE.coverType)
+      ((err as { field?: string }).field === FIELD_COVER || err.message === MESSAGE.coverType)
     ) {
-      return fail(res, HTTP_STATUS.unprocessable, [
-        { field: FIELD_COVER, message: err.message },
-      ]);
+      return fail(res, HTTP_STATUS.unprocessable, [{ field: FIELD_COVER, message: err.message }]);
     }
 
     if (req.file && err instanceof Error) {

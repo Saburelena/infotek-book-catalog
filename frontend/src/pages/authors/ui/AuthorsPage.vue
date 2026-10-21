@@ -17,7 +17,17 @@
 
     <template #filters>
       <form class="filters" @submit="submit">
-        <SearchField :value="filters.search" placeholder="ФИО автора" aria-label="Поиск авторов" />
+        <SearchField
+          :value="filters.search"
+          placeholder="ФИО автора"
+          aria-label="Поиск авторов"
+          @update:value="(v) => set({ search: v })"
+          @search="
+            () => {
+              submit();
+            }
+          "
+        />
         <button class="btn btn-primary" type="submit">Найти</button>
       </form>
     </template>

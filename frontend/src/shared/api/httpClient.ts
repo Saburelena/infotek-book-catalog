@@ -1,5 +1,6 @@
 import { API_PATH, API_PREFIX, FORM_FIELD, HTTP_STATUS, ROLE_USER, SESSION_KEYS } from "@/shared/config/constants";
 import { isAbortError } from "./errors";
+import { upload } from "@vercel/blob/client";
 import type { AuthUser, ErrorItem, AuthorListParams, BookListParams } from "@/shared/types/entities";
 import { ApiError } from "./errors";
 import {
@@ -32,6 +33,7 @@ export interface SessionStorage {
 }
 
 export interface HttpClient {
+  getToken(): string | null;
   request<T>(path: string, options?: RequestOptions): Promise<T>;
 }
 
@@ -40,7 +42,7 @@ export type RequestOptions = {
   body?: BodyInit | null;
   json?: unknown;
   auth?: boolean;
-  signal?: AbortSignal;
+  signal?: AbortSignal | undefined;
   timeoutMs?: number;
 };
 
@@ -169,7 +171,7 @@ export function createHttpClient(config: {
         method: options.method || "GET",
         headers,
         body,
-        signal: effectiveSignal,
+        signal: effectiveSignal ?? null,
       });
 
       if (response.status === HTTP_STATUS.noContent) return undefined as T;
@@ -213,7 +215,7 @@ export function createHttpClient(config: {
     }
   }
 
-  return { request };
+  return { request, getToken: () => config.session.read().token };
 }
 
 export function createApiServices(http: HttpClient) {
@@ -251,7 +253,7 @@ export function createApiServices(http: HttpClient) {
               body: form,
               signal,
             })
-          : form.has(FORM_FIELD.cover)
+          : form.has(FORM_FIELD.cover) || form.has("cover_url")
             ? await http.request<unknown>(API_PATH.book(id), {
                 method: "PUT",
                 body: form,
@@ -269,6 +271,19 @@ export function createApiServices(http: HttpClient) {
                 signal,
               });
         return requireBook(raw);
+      },
+      uploadCover: async (file: File): Promise<string> => {
+        const token = http.getToken();
+        if (!token) {
+          throw new ApiError(HTTP_STATUS.unauthorized, [{ field: "base", message: "Необходима авторизация" }]);
+        }
+        const uploadBase = import.meta.env.VITE_API_BASE || API_PREFIX;
+        const result = await upload(`covers/${Date.now()}-${file.name}`, file, {
+          access: "public",
+          handleUploadUrl: `${uploadBase}/uploads/blob-token`,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return result.url;
       },
       remove: (id: number, signal?: AbortSignal) => http.request<void>(API_PATH.book(id), { method: "DELETE", signal }),
     },

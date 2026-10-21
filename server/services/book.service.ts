@@ -11,10 +11,7 @@ function includesWholeWord(text: string, query: string) {
   const normalizedText = text.toLocaleLowerCase("ru-RU");
   const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  return new RegExp(
-    `(^|[^\\p{L}\\p{N}])${escapedQuery}($|[^\\p{L}\\p{N}])`,
-    "u",
-  ).test(normalizedText);
+  return new RegExp(`(^|[^\\p{L}\\p{N}])${escapedQuery}($|[^\\p{L}\\p{N}])`, "u").test(normalizedText);
 }
 
 export class BookService {
@@ -25,18 +22,12 @@ export class BookService {
     private readonly config: ServerConfig,
   ) {}
 
-  list(params: {
-    search?: unknown;
-    year?: unknown;
-    author_id?: unknown;
-    page?: unknown;
-    perPage?: unknown;
-  }) {
+  list(params: { search?: unknown; year?: unknown; author_id?: unknown; page?: unknown; perPage?: unknown }) {
     const store = this.repository.snapshot();
     let items = [...store.books];
 
-    if (params.search) {
-      const query = String(params.search).trim().toLocaleLowerCase("ru-RU");
+    if (typeof params.search === "string" && params.search) {
+      const query = params.search.trim().toLocaleLowerCase("ru-RU");
       if (query) {
         items = items.filter((book) => {
           const authors = store.authors
@@ -54,17 +45,12 @@ export class BookService {
       }
     }
 
-    if (params.year)
-      items = items.filter((book) => book.year === Number(params.year));
+    if (params.year) items = items.filter((book) => book.year === Number(params.year));
     if (params.author_id) {
-      items = items.filter((book) =>
-        book.author_ids.includes(Number(params.author_id)),
-      );
+      items = items.filter((book) => book.author_ids.includes(Number(params.author_id)));
     }
 
-    items.sort(
-      (a, b) => b.year - a.year || a.title.localeCompare(b.title, "ru"),
-    );
+    items.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title, "ru"));
 
     const result = paginate(items, params.page, params.perPage);
     return {
@@ -79,29 +65,39 @@ export class BookService {
     return this.serializeBook(book);
   }
 
-  async create(
-    body: Record<string, unknown>,
-    file: Express.Multer.File | undefined,
-  ) {
+  async create(body: Record<string, unknown>, file: Express.Multer.File | undefined) {
     const store = this.repository.snapshot();
+    const rawCoverUrl = typeof body.cover_url === "string" ? body.cover_url : undefined;
+    const providedBlobUrl = this.covers.isBlobUrl(rawCoverUrl) ? rawCoverUrl : undefined;
+    const coverProvided = Boolean(file || providedBlobUrl);
+
+    if (file && providedBlobUrl) {
+      return {
+        errors: [{ field: FIELD_COVER, message: MESSAGE.coverConflict }],
+      };
+    }
+
     const { errors, value } = validateBookInput(body, {
       requireAll: true,
-      hasCover: Boolean(file),
+      hasCover: coverProvided,
       authors: store.authors,
     });
 
-    if (
-      errors.length ||
-      !file ||
-      !value.title ||
-      value.year === undefined ||
-      !value.author_ids
-    ) {
+    if (errors.length || !value.title || value.year === undefined || !value.author_ids) {
       return {
-        errors: errors.length
-          ? errors
-          : [{ field: FIELD_COVER, message: MESSAGE.coverRequired }],
-      } as const;
+        errors: errors.length ? errors : [{ field: FIELD_COVER, message: MESSAGE.coverRequired }],
+      };
+    }
+
+    let coverUrl: string;
+    if (file) {
+      coverUrl = this.covers.uploadedUrl(file);
+    } else if (providedBlobUrl) {
+      coverUrl = providedBlobUrl;
+    } else {
+      return {
+        errors: [{ field: FIELD_COVER, message: MESSAGE.coverRequired }],
+      };
     }
 
     const book: BookRecord = {
@@ -110,7 +106,7 @@ export class BookService {
       year: value.year,
       description: value.description || "",
       isbn: value.isbn || "",
-      cover_url: this.covers.uploadedUrl(file),
+      cover_url: coverUrl,
       author_ids: value.author_ids,
     };
 
@@ -121,29 +117,31 @@ export class BookService {
     return { book: this.serializeBook(book) } as const;
   }
 
-  update(
-    id: string | undefined,
-    body: Record<string, unknown>,
-    file: Express.Multer.File | undefined,
-  ) {
+  update(id: string | undefined, body: Record<string, unknown>, file: Express.Multer.File | undefined) {
     const book = this.repository.findBook(id);
     if (!book) return { missing: true } as const;
 
     const store = this.repository.snapshot();
+    const rawCoverUrl = typeof body.cover_url === "string" ? body.cover_url : undefined;
+    const providedBlobUrl = this.covers.isBlobUrl(rawCoverUrl) ? rawCoverUrl : undefined;
+
+    if (file && providedBlobUrl) {
+      return {
+        errors: [{ field: FIELD_COVER, message: MESSAGE.coverConflict }],
+      };
+    }
+
     const { errors, value } = validateBookInput(body, {
       requireAll: true,
-      hasCover: Boolean(file || book.cover_url),
+      hasCover: Boolean(file || providedBlobUrl || book.cover_url),
       authors: store.authors,
     });
 
-    if (
-      errors.length ||
-      !value.title ||
-      value.year === undefined ||
-      !value.author_ids
-    ) {
+    if (errors.length || !value.title || value.year === undefined || !value.author_ids) {
       return { errors } as const;
     }
+
+    const previousCoverUrl = book.cover_url;
 
     Object.assign(book, {
       title: value.title,
@@ -154,11 +152,21 @@ export class BookService {
     });
 
     if (file) {
-      this.covers.removeByUrl(book.cover_url);
       book.cover_url = this.covers.uploadedUrl(file);
+    } else if (providedBlobUrl) {
+      book.cover_url = providedBlobUrl;
     }
 
     this.repository.persist(this.config.dataFile);
+
+    if (book.cover_url !== previousCoverUrl) {
+      if (this.covers.isBlobUrl(previousCoverUrl)) {
+        void this.covers.removeBlobByUrl(previousCoverUrl);
+      } else {
+        this.covers.removeByUrl(previousCoverUrl);
+      }
+    }
+
     return { book: this.serializeBook(book) } as const;
   }
 
@@ -189,7 +197,12 @@ export class BookService {
     const book = this.repository.removeBook(id);
     if (!book) return false;
 
-    this.covers.removeByUrl(book.cover_url);
+    if (this.covers.isBlobUrl(book.cover_url)) {
+      void this.covers.removeBlobByUrl(book.cover_url);
+    } else {
+      this.covers.removeByUrl(book.cover_url);
+    }
+
     this.repository.persist(this.config.dataFile);
     return true;
   }
@@ -218,5 +231,3 @@ export class BookService {
       .map((book) => ({ id: book.id, title: book.title, year: book.year }));
   }
 }
-
-export type SerializedBook = ReturnType<BookService["serializeBook"]>;

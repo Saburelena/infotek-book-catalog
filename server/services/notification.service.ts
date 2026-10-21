@@ -2,6 +2,10 @@ import type { BookRecord } from "../domain/types.js";
 import type { ServerConfig } from "../config/env.js";
 import type { StoreRepository } from "../storage/storeRepository.js";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export class NotificationService {
   constructor(
     private readonly repository: StoreRepository,
@@ -57,10 +61,8 @@ export class NotificationService {
     url.searchParams.set("format", "json");
 
     const response = await fetch(url);
-    const payload = (await response.json().catch(() => ({}))) as Record<
-      string,
-      unknown
-    >;
+    const raw = await response.json().catch(() => ({}));
+    const payload: Record<string, unknown> = isRecord(raw) ? raw : {};
 
     this.repository.snapshot().smsLog.push({
       at: new Date().toISOString(),

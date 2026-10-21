@@ -1,10 +1,12 @@
 <template>
   <header class="page-head">
-    <div>
+    <div class="page-head-content">
       <h1>{{ title }}</h1>
       <slot name="extra" />
     </div>
-    <slot />
+    <div class="page-head-actions">
+      <slot />
+    </div>
   </header>
 </template>
 

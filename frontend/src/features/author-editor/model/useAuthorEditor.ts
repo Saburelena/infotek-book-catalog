@@ -40,6 +40,10 @@ export function useAuthorEditor(id: number | null, initialName: string) {
     mutation.mutate();
   }
 
+  function validate() {
+    error.value = validateAuthorName(fullName.value);
+  }
+
   function cancel() {
     void router.push(cancelTo);
   }
@@ -49,6 +53,7 @@ export function useAuthorEditor(id: number | null, initialName: string) {
     error,
     isPending: mutation.isPending,
     submit,
+    validate,
     cancel,
     LIMIT,
   };

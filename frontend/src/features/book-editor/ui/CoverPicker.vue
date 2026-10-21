@@ -31,7 +31,7 @@ withDefaults(
   defineProps<{
     preview?: string;
     title: string;
-    error?: string;
+    error?: string | undefined;
   }>(),
   { preview: "", error: "" },
 );

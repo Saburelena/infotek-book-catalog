@@ -5,10 +5,7 @@ import { BookService } from "./services/book.service.js";
 import { NotificationService } from "./services/notification.service.js";
 import { ReportService } from "./services/report.service.js";
 import { SubscriptionService } from "./services/subscription.service.js";
-import {
-  createCoverStorage,
-  type CoverStorage,
-} from "./storage/coverStorage.js";
+import { createCoverStorage, type CoverStorage } from "./storage/coverStorage.js";
 import { StoreRepository } from "./storage/storeRepository.js";
 
 export type AppContainer = {
@@ -25,7 +22,7 @@ export type AppContainer = {
 
 export function createContainer(): AppContainer {
   const config = createServerConfig();
-  const covers = createCoverStorage({ uploadsDir: config.uploadsDir });
+  const covers = createCoverStorage({ uploadsDir: config.uploadsDir, blobStoreId: config.blobStoreId });
   const repository = new StoreRepository({
     dataFile: config.dataFile,
     onLoad: covers.ensureCovers,

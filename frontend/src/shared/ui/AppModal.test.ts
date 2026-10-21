@@ -61,8 +61,10 @@ describe("AppModal", () => {
     );
 
     await nextTick();
-    const first = document.querySelector('input[aria-label="first"]') as HTMLElement;
-    const last = document.querySelector("button") as HTMLElement;
+    const first = document.querySelector('input[aria-label="first"]');
+    const last = document.querySelector("button");
+    if (!(first instanceof HTMLElement)) throw new Error("expected input");
+    if (!(last instanceof HTMLElement)) throw new Error("expected button");
 
     first.focus();
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true, shiftKey: true }));

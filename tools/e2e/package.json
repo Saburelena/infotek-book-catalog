@@ -6,10 +6,17 @@
   "scripts": {
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.10.0",
+    "jiti": "^2.7.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.70.1"
   }
 }

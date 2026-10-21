@@ -15,4 +15,7 @@ test-results
 .env
 .env.*
 !.env.example
+.idea/
 .vscode/
+.vercel
+*.tsbuildinfo

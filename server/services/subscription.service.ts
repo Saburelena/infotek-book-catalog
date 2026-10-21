@@ -12,13 +12,11 @@ export class SubscriptionService {
     const author = this.repository.findAuthor(authorId);
     if (!author) return { missing: true } as const;
 
-    const phone = normalizePhone(rawPhone);
+    const phone = typeof rawPhone === "string" ? normalizePhone(rawPhone) : "";
     if (!isValidPhone(phone)) return { invalidPhone: true } as const;
 
     const store = this.repository.snapshot();
-    const exists = store.subscriptions.some(
-      (item) => item.author_id === author.id && item.phone === phone,
-    );
+    const exists = store.subscriptions.some((item) => item.author_id === author.id && item.phone === phone);
 
     if (!exists) {
       store.subscriptions.push({

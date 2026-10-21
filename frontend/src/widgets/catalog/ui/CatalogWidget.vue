@@ -14,6 +14,9 @@
       :error-text="errorText"
       :empty-title="emptyTitle"
       :empty-text="emptyText"
+      :skeleton="true"
+      :retryable="true"
+      @retry="$emit('retry')"
     />
 
     <template v-if="ready">
@@ -53,7 +56,7 @@ const props = withDefaults(
     loading: boolean;
     error: boolean;
     empty: boolean;
-    pagination?: { page: number; total_pages: number };
+    pagination?: { page: number; total_pages: number } | undefined;
     loadingText?: string;
     errorText?: string;
     emptyTitle?: string;
@@ -68,7 +71,7 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<{ page: [page: number] }>();
+const emit = defineEmits<{ page: [page: number]; retry: [] }>();
 const ready = computed(() => !props.loading && !props.error && !props.empty);
 const page = computed(() => props.pagination?.page ?? 1);
 const totalPages = computed(() => props.pagination?.total_pages ?? 0);

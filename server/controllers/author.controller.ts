@@ -5,75 +5,72 @@ import type { AuthorService } from "../services/author.service.js";
 import type { SubscriptionService } from "../services/subscription.service.js";
 import { created, fail, ok } from "../utils/response.js";
 
-export function createAuthorController(
-authors: AuthorService,
-subscriptions: SubscriptionService,
-) {
-return {
-list(req: Request, res: Response) {
-const { search, page, "per-page": perPage } = req.query;
-return res.json(ok(authors.list({ search, page, perPage })));
-},
+export function createAuthorController(authors: AuthorService, subscriptions: SubscriptionService) {
+  return {
+    list(req: Request, res: Response) {
+      const { search, page, "per-page": perPage } = req.query;
+      return res.json(ok(authors.list({ search, page, perPage })));
+    },
 
-create(req: Request, res: Response) {
-  const result = authors.create(req.body?.full_name);
+    create(req: Request, res: Response) {
+      const body = (req.body ?? {}) as Record<string, unknown>;
+      const result = authors.create(body.full_name);
 
-  if ("error" in result && result.error) {
-    return fail(res, HTTP_STATUS.unprocessable, [result.error]);
-  }
+      if ("error" in result && result.error) {
+        return fail(res, HTTP_STATUS.unprocessable, [result.error]);
+      }
 
-  return created(res, result.author);
-},
+      return created(res, result.author);
+    },
 
-get(req: Request, res: Response) {
-  const author = authors.get(req.params.id);
+    get(req: Request, res: Response) {
+      const author = authors.get(req.params.id);
 
-  if (!author) {
-    return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
-  }
+      if (!author) {
+        return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
+      }
 
-  return res.json(ok(author));
-},
+      return res.json(ok(author));
+    },
 
-update(req: Request, res: Response) {
-  const result = authors.update(req.params.id, req.body?.full_name);
+    update(req: Request, res: Response) {
+      const body = (req.body ?? {}) as Record<string, unknown>;
+      const result = authors.update(req.params.id, body.full_name);
 
-  if ("missing" in result) {
-    return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
-  }
+      if ("missing" in result) {
+        return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
+      }
 
-  if ("error" in result && result.error) {
-    return fail(res, HTTP_STATUS.unprocessable, [result.error]);
-  }
+      if ("error" in result && result.error) {
+        return fail(res, HTTP_STATUS.unprocessable, [result.error]);
+      }
 
-  return res.json(ok(result.author));
-},
+      return res.json(ok(result.author));
+    },
 
-remove(req: Request, res: Response) {
-  const removed = authors.remove(req.params.id);
+    remove(req: Request, res: Response) {
+      const removed = authors.remove(req.params.id);
 
-  if (!removed) {
-    return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
-  }
+      if (!removed) {
+        return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
+      }
 
-  return res.status(HTTP_STATUS.noContent).end();
-},
+      return res.status(HTTP_STATUS.noContent).end();
+    },
 
-subscribe(req: Request, res: Response) {
-  const result = subscriptions.subscribe(req.params.id, req.body?.phone);
+    subscribe(req: Request, res: Response) {
+      const body = (req.body ?? {}) as Record<string, unknown>;
+      const result = subscriptions.subscribe(req.params.id, body.phone);
 
-  if ("missing" in result) {
-    return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
-  }
+      if ("missing" in result) {
+        return fail(res, HTTP_STATUS.notFound, ["Автор не найден"]);
+      }
 
-  if ("invalidPhone" in result) {
-    return fail(res, HTTP_STATUS.unprocessable, [
-      { field: "phone", message: MESSAGE.phone },
-    ]);
-  }
+      if ("invalidPhone" in result) {
+        return fail(res, HTTP_STATUS.unprocessable, [{ field: "phone", message: MESSAGE.phone }]);
+      }
 
-  return created(res, result.result);
-},
-
-};
+      return created(res, result.result);
+    },
+  };
 }

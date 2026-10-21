@@ -3,21 +3,8 @@ export const YEAR_MAX = 2100;
 export const NAME_MAX = 255;
 export const DESCRIPTION_MAX = 4000;
 export const COVER_MAX_BYTES = 5 * 1024 * 1024;
-export const COVER_EXT = [
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".webp",
-  ".gif",
-  ".svg",
-] as const;
-export const COVER_MIME = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/svg+xml",
-] as const;
+export const COVER_EXT = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"] as const;
+export const COVER_MIME = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"] as const;
 export const COVER_FALLBACK_EXT = ".jpg";
 export const FIELD_COVER = "cover";
 export const ISBN10_PATTERN = /^\d{10}$/;
@@ -34,6 +21,7 @@ export const MAX_PER_PAGE = 100;
 export const TOP_AUTHORS = 10;
 export const DEFAULT_PORT = 3001;
 export const API_PREFIX = "/api/v1";
+export const BLOB_HOSTNAME_SUFFIX = ".public.blob.vercel-storage.com";
 export const ROLE_USER = "user";
 export const HTTP_STATUS = {
   created: 201,
@@ -52,4 +40,5 @@ export const MESSAGE = {
   coverType: "Нужен файл изображения",
   coverTooBig: "Файл больше 5 МБ",
   coverRequired: "Загрузите фото главной страницы",
+  coverConflict: "Нельзя передать и файл, и URL обложки одновременно",
 } as const;

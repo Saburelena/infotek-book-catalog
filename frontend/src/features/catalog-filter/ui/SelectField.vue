@@ -66,7 +66,7 @@ const triggerRef = ref<HTMLButtonElement | null>(null);
 const listRef = ref<HTMLUListElement | null>(null);
 const listId = useId();
 const prefix = useId();
-let timer = 0;
+const scrollTimer = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const options = computed(() => props.options);
 const currentLabel = computed(
@@ -104,7 +104,10 @@ async function show() {
 function close() {
   open.value = false;
   scrolling.value = false;
-  window.clearTimeout(timer);
+  if (scrollTimer.value) {
+    clearTimeout(scrollTimer.value);
+    scrollTimer.value = null;
+  }
   triggerRef.value?.focus();
 }
 
@@ -122,8 +125,8 @@ function move(delta: number) {
 
 function scrollActiveIntoView() {
   const list = listRef.value;
-  const option = list?.children[activeIndex.value] as HTMLElement | undefined;
-  if (!list || !option) return;
+  const option = list?.children[activeIndex.value];
+  if (!list || !(option instanceof HTMLElement)) return;
 
   const top = option.offsetTop;
   const bottom = top + option.offsetHeight;
@@ -135,9 +138,12 @@ function scrollActiveIntoView() {
 
 function reveal() {
   scrolling.value = true;
-  window.clearTimeout(timer);
-  timer = window.setTimeout(() => {
+  if (scrollTimer.value) {
+    clearTimeout(scrollTimer.value);
+  }
+  scrollTimer.value = setTimeout(() => {
     scrolling.value = false;
+    scrollTimer.value = null;
   }, 700);
 }
 
@@ -189,7 +195,7 @@ function onListKeydown(event: KeyboardEvent) {
 
 function onPointerDown(event: PointerEvent) {
   const root = triggerRef.value?.closest(".ui-select");
-  if (root && root.contains(event.target as Node)) return;
+  if (root && event.target instanceof Node && root.contains(event.target)) return;
   if (open.value) close();
 }
 
@@ -203,6 +209,9 @@ watch(
 onMounted(() => document.addEventListener("pointerdown", onPointerDown));
 onUnmounted(() => {
   document.removeEventListener("pointerdown", onPointerDown);
-  window.clearTimeout(timer);
+  if (scrollTimer.value) {
+    clearTimeout(scrollTimer.value);
+    scrollTimer.value = null;
+  }
 });
 </script>

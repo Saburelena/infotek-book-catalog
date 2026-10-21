@@ -1,7 +1,7 @@
 <template>
   <template v-for="(author, index) in authors ?? []" :key="author.id">
     <span v-if="index > 0" aria-hidden="true">,</span>
-    <RouterLink :to="ROUTES.author(author.id)">{{ author.full_name }}</RouterLink>
+    <RouterLink :to="ROUTES.author(author.id)" :tabindex="-1">{{ author.full_name }}</RouterLink>
   </template>
 </template>
 

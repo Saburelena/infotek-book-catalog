@@ -1,0 +1,470 @@
+@use "./tokens" as *;
+@use "./mixins" as *;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html.theme-dark {
+  color-scheme: dark;
+}
+
+html,
+body,
+.app-root {
+  min-height: 100%;
+}
+
+::selection {
+  color: var(--ink);
+  background: var(--burgundy-strong);
+}
+
+:focus,
+:focus-visible {
+  outline: none;
+}
+
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  appearance: none;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--serif);
+  color: var(--ink);
+  background-color: var(--page);
+  background-image: var(--page-glow), var(--page-grad);
+}
+
+h1,
+h2,
+h3,
+.brand strong {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-tight);
+}
+
+a {
+  color: var(--burgundy);
+  text-decoration-thickness: from-font;
+  border-radius: var(--radius-sm);
+}
+
+a:hover {
+  color: var(--burgundy-2);
+}
+
+a:focus-visible {
+  box-shadow: var(--ring-gold);
+}
+
+a:active {
+  color: var(--burgundy-2);
+  opacity: 0.88;
+}
+
+p {
+  line-height: var(--lh-body);
+}
+
+.nav-link,
+.btn,
+.pager button,
+.chip {
+  @include field-base;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--btn-pad-x);
+  overflow: hidden;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--duration) ease,
+    border-color var(--duration) ease,
+    color var(--duration) ease,
+    box-shadow var(--duration) ease,
+    transform var(--duration-press) ease,
+    opacity var(--duration) ease;
+}
+
+.nav-link,
+.btn {
+  text-transform: uppercase;
+  letter-spacing: var(--track-wide);
+}
+
+.nav-link {
+  font-size: var(--text-2xs);
+}
+
+.btn,
+.pager button {
+  font-size: var(--text-xs);
+}
+
+.nav-link.active,
+.btn-primary,
+.chip.on,
+.chip:has(input:checked) {
+  color: var(--gold-2);
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+}
+
+.btn-primary:not(:disabled):hover,
+.nav-link:not(.active):hover,
+.pager button:not(:disabled):hover {
+  color: var(--gold-2);
+  background: var(--burgundy-2);
+  border-color: var(--burgundy-2);
+}
+
+.nav-link.active:hover {
+  color: var(--gold-2);
+  background: var(--burgundy-2);
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--ink);
+  background: var(--ghost-hover);
+}
+
+.btn-danger {
+  color: var(--gold-2);
+  background: var(--leather);
+  border-color: var(--leather);
+}
+
+.btn-danger:not(:disabled):hover {
+  color: var(--cream);
+  background: var(--danger-hover);
+  border-color: var(--danger-hover);
+}
+
+.btn:not(:disabled):active,
+.nav-link:active,
+.pager button:not(:disabled):active,
+.chip:active {
+  transform: scale(var(--press-scale));
+}
+
+.btn-primary:not(:disabled):active,
+.nav-link.active:active {
+  background: var(--burgundy-2);
+}
+
+.btn:disabled,
+.pager button:disabled,
+.chip:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.person {
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+.btn .person {
+  margin-left: 0.35em;
+}
+
+.nav-link:focus-visible,
+.btn:focus-visible,
+.pager button:focus-visible,
+.chip:focus-visible,
+.chip:focus-within:has(input:focus-visible) {
+  box-shadow: var(--focus-ring);
+}
+
+.chip:hover {
+  border-color: var(--burgundy);
+}
+
+.chip:has(input:checked):hover {
+  background: var(--burgundy-2);
+  border-color: var(--burgundy-2);
+}
+
+input,
+textarea {
+  @include field-base;
+
+  width: 100%;
+  padding: 0 var(--space-2);
+  font: inherit;
+  font-size: var(--text-xs);
+  color: var(--ink);
+  accent-color: var(--burgundy);
+  transition:
+    border-color var(--duration) ease,
+    box-shadow var(--duration) ease,
+    background-color var(--duration) ease;
+}
+
+textarea {
+  height: auto;
+  padding: var(--space-3) var(--field-pad);
+  resize: vertical;
+  border-radius: var(--radius);
+}
+
+input:hover:not(:disabled, :focus),
+textarea:hover:not(:disabled, :focus) {
+  border-color: var(--field-hover-border);
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  border-color: var(--burgundy);
+  box-shadow: var(--ring-ink);
+}
+
+input:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  background: var(--card);
+  opacity: 0.55;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  caret-color: var(--ink);
+  background-color: var(--vellum);
+  -webkit-box-shadow: none;
+  -webkit-text-fill-color: var(--ink);
+}
+
+input::-webkit-search-cancel-button {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  appearance: none;
+  cursor: pointer;
+  background: var(--muted);
+  border-radius: 50%;
+  opacity: 0.6;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M18 6L6 18M6 6l12 12' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  transition: opacity 0.2s ease;
+}
+
+input::-webkit-search-cancel-button:hover {
+  opacity: 1;
+}
+
+::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+label {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.field-error {
+  margin: 6px 0 0;
+  font-size: var(--text-md);
+  color: var(--burgundy);
+}
+
+code {
+  padding: 1px 6px;
+  background: var(--burgundy-soft);
+  border-radius: var(--radius-sm);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: var(--space-4);
+  z-index: var(--z-skip);
+  padding: 10px var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--gold-2);
+  text-decoration: none;
+  background: var(--burgundy);
+  border-radius: var(--radius-pill);
+  transform: translateY(-120%);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  box-shadow: var(--ring-gold);
+  transform: translateY(var(--space-3));
+}
+
+.skip-link:active {
+  opacity: 0.9;
+}
+
+.ui-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin-bottom: var(--space-8);
+}
+
+.ui-row.wrap {
+  flex-wrap: wrap;
+}
+
+.skeleton-line {
+  background: var(--burgundy-soft);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-line--lg {
+  width: 60%;
+  height: 20px;
+  margin-bottom: var(--space-3);
+}
+
+.skeleton-line--sm {
+  width: 40%;
+  height: 14px;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(0.3);
+}
+
+input[list]:focus {
+  border-color: var(--burgundy);
+  box-shadow: var(--ring-ink);
+}
+
+@media (min-width: #{$bp-xxs}) {
+  input,
+  textarea {
+    padding: 0 var(--field-pad-xs);
+    font-size: var(--text-sm);
+  }
+
+  h1 {
+    font-size: var(--text-display);
+  }
+}
+
+@media (min-width: #{$bp-xs}) {
+  input,
+  textarea {
+    height: var(--field-h);
+    padding: 0 var(--field-pad);
+    font-size: inherit;
+  }
+}
+
+// Печать: скрываем навигацию, меню, кнопки; фон — белый.
+@media print {
+  .masthead,
+  .footer,
+  .skip-link,
+  .theme-toggle,
+  .btn,
+  .nav-link,
+  .pager,
+  .skeleton-line {
+    display: none;
+  }
+
+  .book-cover,
+  .detail-cover,
+  .book-cover-frame {
+    max-width: 120px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+}
+
+// Усиленный контраст: чёрная линия, чёрный текст на светлом фоне.
+@media (prefers-contrast: more) {
+  :root {
+    --line: #000;
+    --muted: var(--ink);
+  }
+}

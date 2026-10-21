@@ -10,9 +10,7 @@ export function createReportController(report: ReportService) {
       const result = report.topAuthors(req.query.year);
 
       if ("invalidYear" in result) {
-        return fail(res, HTTP_STATUS.badRequest, [
-          { field: "year", message: "Параметр year не указан или неверен" },
-        ]);
+        return fail(res, HTTP_STATUS.badRequest, [{ field: "year", message: "Параметр year не указан или неверен" }]);
       }
 
       return res.json(ok(result.result));

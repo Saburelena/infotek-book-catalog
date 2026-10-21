@@ -9,6 +9,7 @@
           :maxlength="LIMIT.name"
           :aria-invalid="invalid || undefined"
           :aria-describedby="describedby"
+          @blur="validate"
         />
       </FormField>
       <FormActions :pending="isPending" @cancel="cancel" />
@@ -24,5 +25,5 @@ import { useAuthorEditor } from "../model/useAuthorEditor";
 
 const props = defineProps<{ id: number | null; fullName: string }>();
 
-const { fullName, error, isPending, submit, cancel, LIMIT } = useAuthorEditor(props.id, props.fullName);
+const { fullName, error, isPending, submit, validate, cancel, LIMIT } = useAuthorEditor(props.id, props.fullName);
 </script>

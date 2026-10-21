@@ -5,10 +5,10 @@ import { useRouter } from "vue-router";
 import { useAppServices } from "@/shared/di/container";
 import type { Book } from "@/shared/types/entities";
 import { useAbortable } from "@/shared/lib/useAbortable";
-import { coverFileError, mediaUrl } from "@/shared/lib/utils";
+import { coverFileError, isbnError, mediaUrl, parseYear } from "@/shared/lib/utils";
 import { validateBookForm } from "@/shared/lib/formValidation";
 import { ApiError } from "@/shared/api/errors";
-import { FORM_FIELD, LIMIT, ROUTES } from "@/shared/config/constants";
+import { FORM_FIELD, LIMIT, MESSAGE, ROUTES } from "@/shared/config/constants";
 import { useCatalogWrite } from "@/features/catalog-management";
 
 export function useBookEditor(id: number | null, book?: Book) {
@@ -22,7 +22,7 @@ export function useBookEditor(id: number | null, book?: Book) {
     year: book ? String(book.year) : String(new Date().getFullYear()),
     description: book?.description || "",
     isbn: book?.isbn || "",
-    author_ids: (book?.authors?.map((a) => a.id) ?? []) as number[],
+    author_ids: book?.authors?.map((a) => a.id) ?? [],
   });
 
   const cover = shallowRef<File | null>(null);
@@ -36,7 +36,7 @@ export function useBookEditor(id: number | null, book?: Book) {
   });
 
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const fd = new FormData();
       fd.append("title", form.title.trim());
       fd.append("year", form.year);
@@ -45,7 +45,15 @@ export function useBookEditor(id: number | null, book?: Book) {
       for (const authorId of form.author_ids) {
         fd.append(FORM_FIELD.authorIds, String(authorId));
       }
-      if (cover.value) fd.append(FORM_FIELD.cover, cover.value);
+      if (cover.value) {
+        const blobMode = import.meta.env.VITE_COVER_UPLOAD_MODE === "blob";
+        if (blobMode) {
+          const url = await services.books.uploadCover(cover.value);
+          fd.append("cover_url", url);
+        } else {
+          fd.append(FORM_FIELD.cover, cover.value);
+        }
+      }
       return services.books.save(fd, id ?? undefined, signal());
     },
     onSuccess: (saved) =>
@@ -83,6 +91,29 @@ export function useBookEditor(id: number | null, book?: Book) {
     mutation.mutate();
   }
 
+  function validateTitle() {
+    const next = { ...errors.value };
+    if (!form.title.trim()) next.title = "Укажите название книги";
+    else delete next.title;
+    errors.value = next;
+  }
+
+  function validateYear() {
+    const next = { ...errors.value };
+    const yearMessage = parseYear(form.year) === undefined ? MESSAGE.year : "";
+    if (yearMessage) next.year = yearMessage;
+    else delete next.year;
+    errors.value = next;
+  }
+
+  function validateIsbn() {
+    const next = { ...errors.value };
+    const isbnMessage = isbnError(form.isbn);
+    if (isbnMessage) next.isbn = isbnMessage;
+    else delete next.isbn;
+    errors.value = next;
+  }
+
   function cancel() {
     void router.push(cancelTo);
   }
@@ -95,6 +126,9 @@ export function useBookEditor(id: number | null, book?: Book) {
     isPending: mutation.isPending,
     onCover,
     submit,
+    validateTitle,
+    validateYear,
+    validateIsbn,
     cancel,
     LIMIT,
   };

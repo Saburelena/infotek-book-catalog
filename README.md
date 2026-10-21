@@ -2,61 +2,61 @@
 
 Тестовый fullstack-проект каталога книг: Vue 3 + TypeScript + Vite на клиенте и Express + TypeScript на сервере. Проект показывает не только UI, но и архитектуру, API-слой, авторизацию, CRUD, загрузку обложек, тестирование и production-oriented tooling.
 
-**Демо:** https://infotek-book-catalog-h6vkasbvq-saburelena.vercel.app/
+**Демо:** https://infotek-book-catalog-six.vercel.app/
 **GitHub:** https://github.com/Saburelena/infotek-book-catalog
 
 ## Что реализовано
 
-* каталог книг и авторов;
-* поиск, фильтры и пагинация;
-* страницы книги, автора и отчёта ТОП-10;
-* CRUD книг и авторов;
-* JWT-аутентификация;
-* загрузка и удаление обложек;
-* подписка на новые книги автора с эмуляцией SMSPilot;
-* клиентский API-layer с нормализацией ответов;
-* TanStack Vue Query для server-state;
-* DI composition root на фронтенде и backend dependency container;
-* Feature-Sliced Design на фронтенде;
-* TypeScript strict mode;
-* Vitest + Vue Test Utils;
-* backend unit tests на `node:test` + `tsx`;
-* Playwright E2E + автоматический axe accessibility smoke-check;
-* dependency-cruiser для проверки FSD-зависимостей;
-* GitHub Actions CI;
-* production Docker image с frontend + API;
-* health endpoint и структурированный HTTP request logging.
+- каталог книг и авторов;
+- поиск, фильтры и пагинация;
+- страницы книги, автора и отчёта ТОП-10;
+- CRUD книг и авторов;
+- JWT-аутентификация;
+- загрузка и удаление обложек;
+- подписка на новые книги автора с эмуляцией SMSPilot;
+- клиентский API-layer с нормализацией ответов;
+- TanStack Vue Query для server-state;
+- DI composition root на фронтенде и backend dependency container;
+- Feature-Sliced Design на фронтенде;
+- TypeScript strict mode;
+- Vitest + Vue Test Utils;
+- backend unit tests на `node:test` + `tsx`;
+- Playwright E2E + автоматический axe accessibility smoke-check;
+- dependency-cruiser для проверки FSD-зависимостей;
+- GitHub Actions CI;
+- production Docker image с frontend + API;
+- health endpoint и структурированный HTTP request logging.
 
 ## Стек
 
 ### Frontend
 
-* Vue 3
-* TypeScript
-* Vite
-* Vue Router
-* TanStack Vue Query
-* Vitest
-* Vue Test Utils
-* ESLint + eslint-plugin-vue
-* Prettier
-* dependency-cruiser
+- Vue 3
+- TypeScript
+- Vite
+- Vue Router
+- TanStack Vue Query
+- Vitest
+- Vue Test Utils
+- ESLint + eslint-plugin-vue
+- Prettier
+- dependency-cruiser
 
 ### Backend
 
-* Node.js
-* Express
-* TypeScript
-* JWT
-* Multer
-* JSON storage для тестового окружения
+- Node.js
+- Express
+- TypeScript
+- JWT
+- Multer
+- JSON storage для тестового окружения
 
 ### Quality / delivery
 
-* Playwright
-* axe-core
-* GitHub Actions
-* Docker / Docker Compose
+- Playwright
+- axe-core
+- GitHub Actions
+- Docker / Docker Compose
 
 ## Архитектура frontend
 
@@ -133,9 +133,9 @@ npm run dev
 
 Адреса:
 
-* Frontend: http://localhost:5173
-* API: http://localhost:3001/api/v1
-* Health: http://localhost:3001/api/v1/health
+- Frontend: http://localhost:5173
+- API: http://localhost:3001/api/v1
+- Health: http://localhost:3001/api/v1/health
 
 ### Демо-учётная запись
 
@@ -186,6 +186,7 @@ E2E-пакет специально отделён в `tools/e2e`, чтобы б
 
 ```text
 VITE_API_BASE=/api/v1
+VITE_API_ORIGIN=http://localhost:3001
 ```
 
 ### Backend
@@ -237,16 +238,18 @@ GET /api/v1/health
 
 Playwright smoke tests проверяют:
 
-* открытие каталога;
-* переход между основными разделами;
-* авторизацию демо-пользователя;
-* базовый accessibility audit через axe.
+- открытие каталога;
+- переход между основными разделами;
+- авторизацию демо-пользователя;
+- базовый accessibility audit через axe.
 
 ## Styling
 
 Стили находятся в `frontend/src/app/styles/` и организованы как глобальные CSS-слои:
 
 ```text
+index (точка входа)
+ ↓
 tokens → base → shell → catalog → forms → overlays
 ```
 
@@ -264,14 +267,14 @@ JSON storage оставлен намеренно как инфраструкту
 
 Проект демонстрирует:
 
-* архитектурное мышление;
-* разделение transport/business/UI concerns;
-* работу с async server-state;
-* dependency injection;
-* строгую типизацию;
-* обработку ошибок и edge cases;
-* accessibility-oriented markup;
-* автоматизированные проверки;
-* контейнеризацию и CI.
+- архитектурное мышление;
+- разделение transport/business/UI concerns;
+- работу с async server-state;
+- dependency injection;
+- строгую типизацию;
+- обработку ошибок и edge cases;
+- accessibility-oriented markup;
+- автоматизированные проверки;
+- контейнеризацию и CI.
 
 При этом проект является **тестовым заданием**, поэтому JSON storage и эмулятор SMSPilot используются как часть инфраструктуры тестового проекта и не выдаются за production infrastructure.

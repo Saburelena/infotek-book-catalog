@@ -58,11 +58,13 @@ export function useSearchFilter() {
     });
   }
 
-  function submit(event: Event) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (!(form instanceof HTMLFormElement)) return;
-    set({ search: String(new FormData(form).get("search") ?? "") });
+  function submit(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      if (!(form instanceof HTMLFormElement)) return;
+      set({ search: String(new FormData(form).get("search") ?? "") });
+    }
   }
 
   return { filters, set, submit, model };

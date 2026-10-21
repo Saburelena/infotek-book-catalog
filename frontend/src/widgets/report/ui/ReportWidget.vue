@@ -18,27 +18,29 @@
       :error-text="yearsError ? 'Не удалось загрузить годы для отчёта.' : 'Не удалось загрузить отчёт.'"
       empty-title="Нет данных за этот год"
       empty-text="За этот год в каталоге нет книг."
+      :skeleton="true"
+      :retryable="true"
     />
 
     <ol v-if="!isLoading && !yearsLoading && !isError && !yearsError && rows.length" class="rank-list">
       <li v-for="row in rows" :key="row.author_id">
-        <span class="rank">{{ row.rank }}</span>
-        <div class="rank-body">
-          <RouterLink :to="ROUTES.author(row.author_id)">
+        <RouterLink :to="ROUTES.author(row.author_id)">
+          <span class="rank">{{ row.rank }}</span>
+          <div class="rank-body">
             {{ row.full_name }}
-          </RouterLink>
-          <div
-            class="rank-bar"
-            role="progressbar"
-            :aria-label="`Доля от лидера: ${row.booksLabel}`"
-            :aria-valuenow="row.books_count"
-            :aria-valuemin="0"
-            :aria-valuemax="maxBooks"
-          >
-            <span :style="{ width: row.barWidth }" />
+            <div
+              class="rank-bar"
+              role="progressbar"
+              :aria-label="`Доля от лидера: ${row.booksLabel}`"
+              :aria-valuenow="row.books_count"
+              :aria-valuemin="0"
+              :aria-valuemax="maxBooks"
+            >
+              <span :style="{ width: row.barWidth }" />
+            </div>
           </div>
-        </div>
-        <strong>{{ row.booksLabel }}</strong>
+          <strong>{{ row.booksLabel }}</strong>
+        </RouterLink>
       </li>
     </ol>
   </section>
