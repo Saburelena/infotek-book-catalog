@@ -4,13 +4,15 @@
 
     <header class="masthead">
       <div class="masthead-inner">
-        <RouterLink :to="ROUTES.home" class="brand" aria-label="Инфотек — каталог книг, на главную">
-          <span class="brand-mark" aria-hidden="true">И</span>
+        <RouterLink :to="ROUTES.home" class="brand" aria-describedby="brand-desc">
+          <span class="brand-mark" aria-hidden="true"></span>
           <span>
             <strong>Инфотек</strong>
+            &nbsp;
             <em>каталог книг</em>
           </span>
         </RouterLink>
+        <span id="brand-desc" class="sr-only">на главную</span>
 
         <nav class="masthead-nav" aria-label="Основная навигация">
           <RouterLink

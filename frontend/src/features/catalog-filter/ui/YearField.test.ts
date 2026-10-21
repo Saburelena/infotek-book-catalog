@@ -14,7 +14,7 @@ describe("YearField", () => {
       attachTo: document.body,
     });
     const trigger = wrapper.get(".ui-select-trigger");
-    expect(trigger.attributes("aria-label")).toBe("Год");
+    expect(trigger.attributes("aria-label")).toBe("Год: Все годы");
     expect(trigger.text()).toContain("Все годы");
 
     await trigger.trigger("click");

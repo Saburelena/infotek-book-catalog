@@ -4,7 +4,7 @@
       ref="triggerRef"
       class="ui-select-trigger"
       type="button"
-      :aria-label="label"
+      :aria-label="`${label}: ${currentLabel}`"
       :aria-expanded="open"
       aria-haspopup="listbox"
       :aria-controls="listId"

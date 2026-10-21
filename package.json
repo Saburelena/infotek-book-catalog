@@ -1,7 +1,11 @@
 {
   "name": "infotek-book-catalog",
   "private": true,
-  "workspaces": ["frontend", "server", "tools/e2e"],
+  "workspaces": [
+    "frontend",
+    "server",
+    "tools/e2e"
+  ],
   "engines": {
     "node": ">=22 <25"
   },
@@ -18,6 +22,7 @@
     "typecheck": "npm run typecheck --prefix frontend && npm run typecheck --prefix server && npm run typecheck --prefix tools/e2e",
     "test": "npm test --prefix frontend && npm test --prefix server",
     "dep:check": "npm run dep:check --prefix frontend",
+    "type-coverage": "npm run type-coverage --prefix frontend && npm run type-coverage --prefix server",
     "build": "npm run build --prefix frontend && npm run build --prefix server",
     "vercel-build": "npm install --prefix server && npm run build --prefix server",
     "e2e:install": "npm install --prefix tools/e2e",

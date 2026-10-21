@@ -1,5 +1,6 @@
 {
-  "buildCommand": "npm install --prefix server && cd frontend && npm install && npm run build && cp -R ../server/uploads ./dist/uploads",
+  "buildCommand": "npm install && npm run build --workspace frontend && cp -R server/uploads frontend/dist/uploads",
+  "installCommand": "npm install",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {

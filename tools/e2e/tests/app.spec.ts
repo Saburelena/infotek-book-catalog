@@ -64,7 +64,7 @@ test("catalog pagination navigates to page 2", async ({ page }) => {
 
   const pager = page.locator("nav[aria-label='Страницы']");
   await expect(pager).toBeVisible();
-  await pager.getByRole("button", { name: /Следующая страница/ }).click();
+  await pager.getByRole("button", { name: /Дальше/ }).click();
 
   await expect(page.locator("span[aria-live='polite']")).toContainText("Страница 2 из");
 });

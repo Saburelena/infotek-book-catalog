@@ -25,7 +25,7 @@
         <button
           type="button"
           :disabled="page <= 1"
-          :aria-label="`Предыдущая страница, текущая ${page}`"
+          :aria-label="`Назад, текущая страница ${page}`"
           @click="emit('page', page - 1)"
         >
           Назад
@@ -34,7 +34,7 @@
         <button
           type="button"
           :disabled="page >= totalPages"
-          :aria-label="`Следующая страница, текущая ${page}`"
+          :aria-label="`Дальше, текущая страница ${page}`"
           @click="emit('page', page + 1)"
         >
           Дальше
